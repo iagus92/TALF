@@ -1,0 +1,32 @@
+
+{
+  variable = EXPRESION;
+
+  for (; EXPRESION; EXPRESION) {
+    otra_variable = EXPRESION;
+ 
+    if (EXPRESION)
+      if (EXPRESION)
+        cero = EXPRESION;
+      else {
+        uno = EXPRESION;
+        dos = EXPRESION;
+        }
+    else {
+      tres = EXPRESION;
+      }
+    
+    if (EXPRESION)
+      break;
+    }
+  
+  for (i = EXPRESION, j = EXPRESION ; EXPRESION; EXPRESION) {
+    if (EXPRESION) 
+      continue;
+    
+    otra_variable = EXPRESION;
+  
+    }
+  
+}
+  

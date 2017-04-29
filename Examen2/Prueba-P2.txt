@@ -1,0 +1,33 @@
+modulo <<<.sim>>
+modulo <<mates.sim>>
+MODULO <<e-s_std.sim>>
+modulo <<%%c>>
+
+funcion Radio_Circunferencia es
+
+comienzo
+    %% Constante
+    %%}
+    NOCHAROCT: constante caracter := '%o477'
+    CHARESC: constante caracter := '%n'
+    CHARHEX: constante caracter := '%XD'
+    NOCT: constante entera:= %O9
+    OCT: constante real := %o30.25
+    HEX: constante real := %XF.0a
+    NOHEX: constante real := %x.ff^%o5
+    PI: constante real := .3141592^1;
+    %% Variables
+    area, 0radio: real;
+    escribir_consola("%nRadio => {circunferencia} es : ");
+    leer_consola(radio); { Entrada de (dato) }
+    %% Calculo del area
+    area := PI {} * radio ** 2;
+    { %% El resultado del area es mostrado por la "consola":
+      se trata de 
+      un numero real }
+    escribir_consola("%nArea de %
+                     la %
+                     %"circunferencia%": \f", area); escribir_consola("%n");
+
+    DeVoLVeR area;
+fin

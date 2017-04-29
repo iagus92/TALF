@@ -1,0 +1,101 @@
+Linea 1, palabra reservada: modulo
+Linea 1, operador: <
+Linea 1, modulo: <<.sim>>
+Linea 2, palabra reservada: modulo
+Linea 2, modulo: <<mates.sim>>
+Linea 3, palabra reservada: MODULO
+Linea 3, modulo: <<e-s_std.sim>>
+Linea 4, palabra reservada: modulo
+Linea 4, modulo: <<%%c>>
+Linea 6, palabra reservada: funcion
+Linea 6, identificador: Radio_Circunferencia
+Linea 6, palabra reservada: es
+Linea 8, palabra reservada: comienzo
+Linea 11, identificador: NOCHAROCT
+Linea 11, delimitador: :
+Linea 11, palabra reservada: constante
+Linea 11, palabra reservada: caracter
+Linea 11, operador: :=
+Linea 12, identificador: CHARESC
+Linea 12, delimitador: :
+Linea 12, palabra reservada: constante
+Linea 12, palabra reservada: caracter
+Linea 12, operador: :=
+Linea 12, caracter: '%n'
+Linea 13, identificador: CHARHEX
+Linea 13, delimitador: :
+Linea 13, palabra reservada: constante
+Linea 13, palabra reservada: caracter
+Linea 13, operador: :=
+Linea 13, caracter: '%XD'
+Linea 14, identificador: NOCT
+Linea 14, delimitador: :
+Linea 14, palabra reservada: constante
+Linea 14, identificador: entera
+Linea 14, operador: :=
+Linea 15, identificador: OCT
+Linea 15, delimitador: :
+Linea 15, palabra reservada: constante
+Linea 15, palabra reservada: real
+Linea 15, operador: :=
+Linea 15, ctc real: %o30.25
+Linea 16, identificador: HEX
+Linea 16, delimitador: :
+Linea 16, palabra reservada: constante
+Linea 16, palabra reservada: real
+Linea 16, operador: :=
+Linea 16, ctc real: %XF.0a
+Linea 17, identificador: NOHEX
+Linea 17, delimitador: :
+Linea 17, palabra reservada: constante
+Linea 17, palabra reservada: real
+Linea 17, operador: :=
+Linea 17, ctc real: %x.ff^%o5
+Linea 18, identificador: PI
+Linea 18, delimitador: :
+Linea 18, palabra reservada: constante
+Linea 18, palabra reservada: real
+Linea 18, operador: :=
+Linea 18, ctc real: .3141592^1
+Linea 18, delimitador: ;
+Linea 20, identificador: area
+Linea 20, delimitador: ,
+Linea 20, delimitador: :
+Linea 20, palabra reservada: real
+Linea 20, delimitador: ;
+Linea 21, identificador: escribir_consola
+Linea 21, delimitador: (
+Linea 21, cadena: "%nRadio => {circunferencia} es : "
+Linea 21, delimitador: )
+Linea 21, delimitador: ;
+Linea 22, identificador: leer_consola
+Linea 22, delimitador: (
+Linea 22, identificador: radio
+Linea 22, delimitador: )
+Linea 22, delimitador: ;
+Linea 24, identificador: area
+Linea 24, operador: :=
+Linea 24, identificador: PI
+Linea 24, operador: *
+Linea 24, identificador: radio
+Linea 24, operador: **
+Linea 24, ctc real: 2
+Linea 24, delimitador: ;
+Linea 28, identificador: escribir_consola
+Linea 28, delimitador: (
+Linea 28,cadena: "%nArea de %
+                     la %
+                     %"circunferencia%": \f"
+Linea 30, delimitador: ,
+Linea 30, identificador: area
+Linea 30, delimitador: )
+Linea 30, delimitador: ;
+Linea 30, identificador: escribir_consola
+Linea 30, delimitador: (
+Linea 30, cadena: "%n"
+Linea 30, delimitador: )
+Linea 30, delimitador: ;
+Linea 32, palabra reservada: DeVoLVeR
+Linea 32, identificador: area
+Linea 32, delimitador: ;
+Linea 33, palabra reservada: fin

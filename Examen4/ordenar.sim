@@ -1,0 +1,132 @@
+modulo <<entradaSalida.sim>>;
+
+exportar ordenarQuicksort,ordenarMonticulos;
+
+{
+primer procedimiento: implementación del quicksort
+}
+procedimiento ordenarQuicksort es
+
+  n : constante entero := 20;
+  lista : tabla (1..n) de entero;
+  limIzdo : entero := 0;
+  limDcho : entero := n-1;
+
+  %%algoritmo de ordenacion
+  procedimiento quicksort (lista : referencia tabla(1..n) de entero; limIzdo,limDcho: valor entero) es
+    izdo : entero := limIzdo;
+    dcho : entero := limDcho;
+    pivote : entero;
+
+  comienzo
+    pivote := lista[(izdo+dcho)/2];
+
+    mientras izdo<=dcho bucle
+      mientras lista[izdo]<pivote /\ izdo<limDcho bucle
+        izdo := izdo+1;
+      fin bucle;
+
+      mientras pivote<lista[dcho] /\ dcho > limIzdo bucle
+        dcho := dcho-1;
+      fin bucle;
+
+      si (izdo<=dcho) entonces
+        temporal := lista[izdo];
+        lista[izdo] := lista[dcho];
+        lista[dcho] := temporal;
+        izdo := izdo+1;
+        dcho := dcho-1;
+      fin si;
+    fin bucle;
+
+    si izdo<dcho entonces
+      quicksort(lista,limIzdo,dcho);
+    fin si;
+    si dcho>izdo entonces
+      quicksort(lista,izdo,limDcho);
+    fin si;
+
+  fin quicksort;
+
+  procedimiento llenarLista (lista : referencia tabla(1..n) de entero; n : valor entero) es
+  comienzo
+    repetir i en 1 .. n bucle
+      lista[i] := aleatorio(1,100);
+    fin bucle;
+  fin llenarLista;
+
+comienzo
+
+  llenarLista(lista);
+
+  escribir("LISTA INICIAL%n");
+  repetir i en 1 .. n bucle
+    escribir("\d -> \d%n",i,lista[i]);
+  fin bucle;
+
+  quicksort(lista,limIzdo,limDcho);
+
+  escribir("LISTA ORDENADA%n");
+  repetir i en 1 .. n bucle
+    escribir("\d -> \d%n",i,lista[i]);
+  fin bucle;
+
+fin ordenarQuicksort;
+
+
+{
+primer procedimiento: ordenacion por monticulos
+}
+procedimiento ordenarMonticulos es
+
+  n : constante entero := 10;
+  lista : tabla(1..n) de entero;
+  temporal : entero;
+
+  procedimiento meter (i,n: referencia entero) es
+    temporal,j : entero;
+    terminar: booleano;
+  comienzo
+    temporal := lista[i];
+
+    mientras (j <= n) /\ ~terminar bucle
+
+      si (j < n) /\ (lista[j] < lista[j+1]) entonces
+        j := j+1;
+      fin si;
+
+      si temporal > lista[j] entonces
+        terminar := verdadero;
+      sino 
+        lista[j/2] := lista[j];
+        j := j*2;
+      fin si;
+
+    fin bucle;
+
+    lista[j/2] := temporal;
+
+  fin meter;
+
+  procedimiento hacerMonticulo es
+  comienzo
+    repetir i en descendente 1 .. n/2 bucle
+      meter(i,n);
+    fin bucle;
+  fin hacerMonticulo;
+
+comienzo
+
+  repetir i en 1 .. n bucle
+    temporal := lista[i+1];
+    lista[i+1] := lista[1];
+    lista[1] := temporal;
+
+    meter(1,i);
+  fin bucle;
+
+  repetir i en 1 .. n bucle
+    escribir(lista[i]);
+  fin bucle;
+
+fin ordenarMonticulos;

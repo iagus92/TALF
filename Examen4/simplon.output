@@ -1,0 +1,4669 @@
+Terminales no usados en la gramática
+
+   RESTO
+
+
+Estado 93 conflictos: 1 desplazamiento/reducción
+Estado 105 conflictos: 1 desplazamiento/reducción
+Estado 208 conflictos: 1 desplazamiento/reducción
+Estado 209 conflictos: 1 desplazamiento/reducción
+
+
+Gramática
+
+    0 $accept: programa $end
+
+    1 programa: modulos exportaciones declaraciones_subprograma
+
+    2 modulos: %empty
+    3        | modulos modulo
+
+    4 modulo: MODULO NOMBRE_MODULO ';'
+
+    5 exportaciones: %empty
+    6              | EXPORTAR identificadores ';'
+
+    7 identificadores: IDENTIFICADOR
+    8                | identificadores ',' IDENTIFICADOR
+
+    9 declaraciones_subprograma: declaracion_subprograma
+   10                          | declaraciones_subprograma declaracion_subprograma
+
+   11 declaracion_subprograma: especificacion_subprograma cuerpo_subprograma ';'
+
+   12 especificacion_subprograma: PROCEDIMIENTO IDENTIFICADOR parametrizacion
+   13                           | FUNCION IDENTIFICADOR parametrizacion DEVOLVER especificacion_tipo
+
+   14 parametrizacion: %empty
+   15                | '(' lista_declaracion_parametros ')'
+
+   16 lista_declaracion_parametros: declaracion_parametros
+   17                             | lista_declaracion_parametros ';' declaracion_parametros
+
+   18 declaracion_parametros: identificadores ':' modo especificacion_tipo
+
+   19 modo: VALOR
+   20     | REFERENCIA
+
+   21 cuerpo_subprograma: %empty
+   22                   | ES COMIENZO bucle_instruccion FIN IDENTIFICADOR
+   23                   | ES bucle_declaracion COMIENZO bucle_instruccion FIN IDENTIFICADOR
+
+   24 declaracion: declaracion_objeto
+   25            | declaracion_tipo
+   26            | declaracion_subtipo
+   27            | declaracion_subprograma
+
+   28 bucle_declaracion: declaracion
+   29                  | bucle_declaracion declaracion
+
+   30 declaracion_objeto: identificadores ':' CONSTANTE tipo_escalar ASIGNACION expresion ';'
+   31                   | identificadores ':' tipo_escalar ASIGNACION expresion ';'
+   32                   | identificadores ':' tipo_compuesto ';'
+   33                   | identificadores ':' nombre_tipo ';'
+
+   34 tipo_escalar: BOOLEANO
+   35             | CARACTER
+   36             | ENTERO
+   37             | REAL
+
+   38 declaracion_tipo: TIPO nombre_tipo ES tipo_compuesto ';'
+
+   39 tipo_compuesto: tipo_tabla
+   40               | tipo_registro
+
+   41 tipo_tabla: TABLA '(' expresion PUNTOS expresion ')' DE especificacion_tipo
+
+   42 especificacion_tipo: tipo_compuesto
+   43                    | nombre_tipo
+
+   44 tipo_registro: REGISTRO campo FIN REGISTRO
+
+   45 campo: identificadores ':' especificacion_tipo ';'
+   46      | campo identificadores ':' especificacion_tipo ';'
+
+   47 declaracion_subtipo: SUBTIPO nombre_tipo ES definicion_subtipo ';'
+
+   48 definicion_subtipo: nombre_tipo restriccion
+
+   49 restriccion: RANGO expresion PUNTOS expresion
+   50            | restriccion expresion
+
+   51 nombre_tipo: IDENTIFICADOR
+   52            | tipo_escalar
+
+   53 instruccion: VACIA ';'
+   54            | instruccion_asignacion
+   55            | instruccion_salir
+   56            | instruccion_bloque
+   57            | instruccion_devolver
+   58            | instruccion_llamada
+   59            | instruccion_si
+   60            | instruccion_casos
+   61            | instruccion_bucle
+
+   62 bucle_instruccion: instruccion
+   63                  | bucle_instruccion instruccion
+
+   64 instruccion_asignacion: nombre ASIGNACION expresion ';'
+
+   65 instruccion_salir: SALIR ';'
+   66                  | SALIR DE IDENTIFICADOR ';'
+   67                  | SALIR CUANDO expresion ';'
+   68                  | SALIR DE IDENTIFICADOR CUANDO expresion ';'
+
+   69 instruccion_bloque: DECLARACION bucle_declaracion COMIENZO bucle_instruccion FIN ';'
+
+   70 instruccion_devolver: DEVOLVER expresion ';'
+
+   71 instruccion_llamada: llamada_subprograma ';'
+
+   72 llamada_subprograma: IDENTIFICADOR '(' ')'
+   73                    | IDENTIFICADOR '(' parametros ')'
+
+   74 parametros: expresion
+   75           | parametros ',' expresion
+
+   76 instruccion_si: SI expresion ENTONCES bucle_instruccion FIN SI ';'
+   77               | SI expresion ENTONCES bucle_instruccion SINO bucle_instruccion FIN SI ';'
+
+   78 instruccion_casos: CASOS expresion ES caso FIN CASOS ';'
+
+   79 caso: CUANDO entradas FLECHA bucle_instruccion
+   80     | caso CUANDO entradas FLECHA bucle_instruccion
+
+   81 entradas: entrada
+   82         | entradas '|' entrada
+
+   83 entrada: expresion
+   84        | expresion PUNTOS expresion
+   85        | OTRO
+
+   86 instruccion_bucle: clausula_iteracion bucle_base ';'
+   87                  | IDENTIFICADOR ':' clausula_iteracion bucle_base ';'
+   88                  | clausula_iteracion bucle_base IDENTIFICADOR ';'
+   89                  | IDENTIFICADOR ':' clausula_iteracion bucle_base IDENTIFICADOR ';'
+
+   90 clausula_iteracion: MIENTRAS expresion
+   91                   | PARA IDENTIFICADOR EN IDENTIFICADOR
+   92                   | REPETIR IDENTIFICADOR EN expresion PUNTOS expresion
+   93                   | REPETIR IDENTIFICADOR EN DESCENDENTE expresion PUNTOS expresion
+   94                   | REPETIR IDENTIFICADOR EN expresion PUNTOS expresion PUNTOS expresion
+   95                   | REPETIR IDENTIFICADOR EN DESCENDENTE expresion PUNTOS expresion PUNTOS expresion
+
+   96 bucle_base: BUCLE bucle_instruccion FIN BUCLE
+
+   97 expresion: and_logico
+   98          | expresion OR and_logico
+
+   99 and_logico: negacion
+  100           | and_logico AND negacion
+
+  101 negacion: comparacion
+  102         | '~' comparacion
+
+  103 comparacion: desplazamiento
+  104            | desplazamiento '>' desplazamiento
+  105            | desplazamiento '<' desplazamiento
+  106            | desplazamiento '=' desplazamiento
+  107            | desplazamiento LEQ desplazamiento
+  108            | desplazamiento GEQ desplazamiento
+  109            | desplazamiento NEQ desplazamiento
+
+  110 desplazamiento: suma_resta
+  111               | desplazamiento DESP_DCHA suma_resta
+  112               | desplazamiento DESP_IZDA suma_resta
+
+  113 suma_resta: multi_div
+  114           | suma_resta '-' multi_div
+  115           | suma_resta '+' multi_div
+
+  116 multi_div: potencia
+  117          | multi_div '*' potencia
+  118          | multi_div '/' potencia
+  119          | multi_div '\\' potencia
+
+  120 potencia: expresion_posfija
+  121         | expresion_posfija POTENCIA potencia
+
+  122 expresion_posfija: expresion_unaria
+  123                  | expresion_unaria operador_posfijo
+
+  124 operador_posfijo: INC
+  125                 | DEC
+
+  126 expresion_unaria: primario
+  127                 | '-' primario
+
+  128 primario: literal
+  129         | nombre
+  130         | '(' expresion ')'
+
+  131 nombre: IDENTIFICADOR
+  132       | elemento_tabla
+  133       | campo_registro
+  134       | llamada_subprograma
+
+  135 campo_registro: nombre '.' IDENTIFICADOR
+
+  136 elemento_tabla: nombre '[' expresion ']'
+
+  137 literal: numero
+  138        | booleano
+  139        | CTC_CARACTER
+  140        | CTC_CADENA
+
+  141 booleano: VERDADERO
+  142         | FALSO
+
+  143 numero: CTC_ENTERA
+  144       | CTC_REAL
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+'(' (40) 15 41 72 73 130
+')' (41) 15 41 72 73 130
+'*' (42) 117
+'+' (43) 115
+',' (44) 8 75
+'-' (45) 114 127
+'.' (46) 135
+'/' (47) 118
+':' (58) 18 30 31 32 33 45 46 87 89
+';' (59) 4 6 11 17 30 31 32 33 38 45 46 47 53 64 65 66 67 68 69 70
+    71 76 77 78 86 87 88 89
+'<' (60) 105
+'=' (61) 106
+'>' (62) 104
+'[' (91) 136
+'\\' (92) 119
+']' (93) 136
+'|' (124) 82
+'~' (126) 102
+error (256)
+BOOLEANO (258) 34
+BUCLE (259) 96
+CARACTER (260) 35
+CASOS (261) 78
+COMIENZO (262) 22 23 69
+CONSTANTE (263) 30
+CUANDO (264) 67 68 79 80
+DE (265) 41 66 68
+DEVOLVER (266) 13 70
+EN (267) 91 92 93 94 95
+ENTERO (268) 36
+ENTONCES (269) 76 77
+ES (270) 22 23 38 47 78
+EXPORTAR (271) 6
+DECLARACION (272) 69
+DESCENDENTE (273) 93 95
+FALSO (274) 142
+FIN (275) 22 23 44 69 76 77 78 96
+FUNCION (276) 13
+MIENTRAS (277) 90
+MODULO (278) 4
+OTRO (279) 85
+PARA (280) 91
+PROCEDIMIENTO (281) 12
+RANGO (282) 49
+REAL (283) 37
+REFERENCIA (284) 20
+REGISTRO (285) 44
+REPETIR (286) 92 93 94 95
+SALIR (287) 65 66 67 68
+SI (288) 76 77
+SINO (289) 77
+SUBTIPO (290) 47
+TABLA (291) 41
+TIPO (292) 38
+VACIA (293) 53
+VALOR (294) 19
+VERDADERO (295) 141
+CTC_CARACTER (296) 139
+CTC_CADENA (297) 140
+IDENTIFICADOR (298) 7 8 12 13 22 23 51 66 68 72 73 87 88 89 91 92 93
+    94 95 131 135
+CTC_ENTERA (299) 143
+CTC_REAL (300) 144
+NOMBRE_MODULO (301) 4
+PUNTOS (302) 41 49 84 92 93 94 95
+RESTO (303)
+ASIGNACION (304) 30 31 64
+FLECHA (305) 79 80
+POTENCIA (306) 121
+INC (307) 124
+DEC (308) 125
+DESP_IZDA (309) 112
+DESP_DCHA (310) 111
+LEQ (311) 107
+GEQ (312) 108
+NEQ (313) 109
+AND (314) 100
+OR (315) 98
+
+
+No terminales con las reglas donde aparecen
+
+$accept (79)
+    en la izquierda: 0
+programa (80)
+    en la izquierda: 1, en la derecha: 0
+modulos (81)
+    en la izquierda: 2 3, en la derecha: 1 3
+modulo (82)
+    en la izquierda: 4, en la derecha: 3
+exportaciones (83)
+    en la izquierda: 5 6, en la derecha: 1
+identificadores (84)
+    en la izquierda: 7 8, en la derecha: 6 8 18 30 31 32 33 45 46
+declaraciones_subprograma (85)
+    en la izquierda: 9 10, en la derecha: 1 10
+declaracion_subprograma (86)
+    en la izquierda: 11, en la derecha: 9 10 27
+especificacion_subprograma (87)
+    en la izquierda: 12 13, en la derecha: 11
+parametrizacion (88)
+    en la izquierda: 14 15, en la derecha: 12 13
+lista_declaracion_parametros (89)
+    en la izquierda: 16 17, en la derecha: 15 17
+declaracion_parametros (90)
+    en la izquierda: 18, en la derecha: 16 17
+modo (91)
+    en la izquierda: 19 20, en la derecha: 18
+cuerpo_subprograma (92)
+    en la izquierda: 21 22 23, en la derecha: 11
+declaracion (93)
+    en la izquierda: 24 25 26 27, en la derecha: 28 29
+bucle_declaracion (94)
+    en la izquierda: 28 29, en la derecha: 23 29 69
+declaracion_objeto (95)
+    en la izquierda: 30 31 32 33, en la derecha: 24
+tipo_escalar (96)
+    en la izquierda: 34 35 36 37, en la derecha: 30 31 52
+declaracion_tipo (97)
+    en la izquierda: 38, en la derecha: 25
+tipo_compuesto (98)
+    en la izquierda: 39 40, en la derecha: 32 38 42
+tipo_tabla (99)
+    en la izquierda: 41, en la derecha: 39
+especificacion_tipo (100)
+    en la izquierda: 42 43, en la derecha: 13 18 41 45 46
+tipo_registro (101)
+    en la izquierda: 44, en la derecha: 40
+campo (102)
+    en la izquierda: 45 46, en la derecha: 44 46
+declaracion_subtipo (103)
+    en la izquierda: 47, en la derecha: 26
+definicion_subtipo (104)
+    en la izquierda: 48, en la derecha: 47
+restriccion (105)
+    en la izquierda: 49 50, en la derecha: 48 50
+nombre_tipo (106)
+    en la izquierda: 51 52, en la derecha: 33 38 43 47 48
+instruccion (107)
+    en la izquierda: 53 54 55 56 57 58 59 60 61, en la derecha: 62
+    63
+bucle_instruccion (108)
+    en la izquierda: 62 63, en la derecha: 22 23 63 69 76 77 79 80
+    96
+instruccion_asignacion (109)
+    en la izquierda: 64, en la derecha: 54
+instruccion_salir (110)
+    en la izquierda: 65 66 67 68, en la derecha: 55
+instruccion_bloque (111)
+    en la izquierda: 69, en la derecha: 56
+instruccion_devolver (112)
+    en la izquierda: 70, en la derecha: 57
+instruccion_llamada (113)
+    en la izquierda: 71, en la derecha: 58
+llamada_subprograma (114)
+    en la izquierda: 72 73, en la derecha: 71 134
+parametros (115)
+    en la izquierda: 74 75, en la derecha: 73 75
+instruccion_si (116)
+    en la izquierda: 76 77, en la derecha: 59
+instruccion_casos (117)
+    en la izquierda: 78, en la derecha: 60
+caso (118)
+    en la izquierda: 79 80, en la derecha: 78 80
+entradas (119)
+    en la izquierda: 81 82, en la derecha: 79 80 82
+entrada (120)
+    en la izquierda: 83 84 85, en la derecha: 81 82
+instruccion_bucle (121)
+    en la izquierda: 86 87 88 89, en la derecha: 61
+clausula_iteracion (122)
+    en la izquierda: 90 91 92 93 94 95, en la derecha: 86 87 88 89
+bucle_base (123)
+    en la izquierda: 96, en la derecha: 86 87 88 89
+expresion (124)
+    en la izquierda: 97 98, en la derecha: 30 31 41 49 50 64 67 68
+    70 74 75 76 77 78 83 84 90 92 93 94 95 98 130 136
+and_logico (125)
+    en la izquierda: 99 100, en la derecha: 97 98 100
+negacion (126)
+    en la izquierda: 101 102, en la derecha: 99 100
+comparacion (127)
+    en la izquierda: 103 104 105 106 107 108 109, en la derecha: 101
+    102
+desplazamiento (128)
+    en la izquierda: 110 111 112, en la derecha: 103 104 105 106 107
+    108 109 111 112
+suma_resta (129)
+    en la izquierda: 113 114 115, en la derecha: 110 111 112 114 115
+multi_div (130)
+    en la izquierda: 116 117 118 119, en la derecha: 113 114 115 117
+    118 119
+potencia (131)
+    en la izquierda: 120 121, en la derecha: 116 117 118 119 121
+expresion_posfija (132)
+    en la izquierda: 122 123, en la derecha: 120 121
+operador_posfijo (133)
+    en la izquierda: 124 125, en la derecha: 123
+expresion_unaria (134)
+    en la izquierda: 126 127, en la derecha: 122 123
+primario (135)
+    en la izquierda: 128 129 130, en la derecha: 126 127
+nombre (136)
+    en la izquierda: 131 132 133 134, en la derecha: 64 129 135 136
+campo_registro (137)
+    en la izquierda: 135, en la derecha: 133
+elemento_tabla (138)
+    en la izquierda: 136, en la derecha: 132
+literal (139)
+    en la izquierda: 137 138 139 140, en la derecha: 128
+booleano (140)
+    en la izquierda: 141 142, en la derecha: 138
+numero (141)
+    en la izquierda: 143 144, en la derecha: 137
+
+
+Estado 0
+
+    0 $accept: . programa $end
+
+    $default  reduce usando la regla 2 (modulos)
+
+    programa  ir al estado 1
+    modulos   ir al estado 2
+
+
+Estado 1
+
+    0 $accept: programa . $end
+
+    $end  desplazar e ir al estado 3
+
+
+Estado 2
+
+    1 programa: modulos . exportaciones declaraciones_subprograma
+    3 modulos: modulos . modulo
+
+    EXPORTAR  desplazar e ir al estado 4
+    MODULO    desplazar e ir al estado 5
+
+    $default  reduce usando la regla 5 (exportaciones)
+
+    modulo         ir al estado 6
+    exportaciones  ir al estado 7
+
+
+Estado 3
+
+    0 $accept: programa $end .
+
+    $default  aceptar
+
+
+Estado 4
+
+    6 exportaciones: EXPORTAR . identificadores ';'
+
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores  ir al estado 9
+
+
+Estado 5
+
+    4 modulo: MODULO . NOMBRE_MODULO ';'
+
+    NOMBRE_MODULO  desplazar e ir al estado 10
+
+
+Estado 6
+
+    3 modulos: modulos modulo .
+
+    $default  reduce usando la regla 3 (modulos)
+
+
+Estado 7
+
+    1 programa: modulos exportaciones . declaraciones_subprograma
+
+    FUNCION        desplazar e ir al estado 11
+    PROCEDIMIENTO  desplazar e ir al estado 12
+
+    declaraciones_subprograma   ir al estado 13
+    declaracion_subprograma     ir al estado 14
+    especificacion_subprograma  ir al estado 15
+
+
+Estado 8
+
+    7 identificadores: IDENTIFICADOR .
+
+    $default  reduce usando la regla 7 (identificadores)
+
+
+Estado 9
+
+    6 exportaciones: EXPORTAR identificadores . ';'
+    8 identificadores: identificadores . ',' IDENTIFICADOR
+
+    ';'  desplazar e ir al estado 16
+    ','  desplazar e ir al estado 17
+
+
+Estado 10
+
+    4 modulo: MODULO NOMBRE_MODULO . ';'
+
+    ';'  desplazar e ir al estado 18
+
+
+Estado 11
+
+   13 especificacion_subprograma: FUNCION . IDENTIFICADOR parametrizacion DEVOLVER especificacion_tipo
+
+    IDENTIFICADOR  desplazar e ir al estado 19
+
+
+Estado 12
+
+   12 especificacion_subprograma: PROCEDIMIENTO . IDENTIFICADOR parametrizacion
+
+    IDENTIFICADOR  desplazar e ir al estado 20
+
+
+Estado 13
+
+    1 programa: modulos exportaciones declaraciones_subprograma .
+   10 declaraciones_subprograma: declaraciones_subprograma . declaracion_subprograma
+
+    FUNCION        desplazar e ir al estado 11
+    PROCEDIMIENTO  desplazar e ir al estado 12
+
+    $default  reduce usando la regla 1 (programa)
+
+    declaracion_subprograma     ir al estado 21
+    especificacion_subprograma  ir al estado 15
+
+
+Estado 14
+
+    9 declaraciones_subprograma: declaracion_subprograma .
+
+    $default  reduce usando la regla 9 (declaraciones_subprograma)
+
+
+Estado 15
+
+   11 declaracion_subprograma: especificacion_subprograma . cuerpo_subprograma ';'
+
+    ES  desplazar e ir al estado 22
+
+    $default  reduce usando la regla 21 (cuerpo_subprograma)
+
+    cuerpo_subprograma  ir al estado 23
+
+
+Estado 16
+
+    6 exportaciones: EXPORTAR identificadores ';' .
+
+    $default  reduce usando la regla 6 (exportaciones)
+
+
+Estado 17
+
+    8 identificadores: identificadores ',' . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 24
+
+
+Estado 18
+
+    4 modulo: MODULO NOMBRE_MODULO ';' .
+
+    $default  reduce usando la regla 4 (modulo)
+
+
+Estado 19
+
+   13 especificacion_subprograma: FUNCION IDENTIFICADOR . parametrizacion DEVOLVER especificacion_tipo
+
+    '('  desplazar e ir al estado 25
+
+    $default  reduce usando la regla 14 (parametrizacion)
+
+    parametrizacion  ir al estado 26
+
+
+Estado 20
+
+   12 especificacion_subprograma: PROCEDIMIENTO IDENTIFICADOR . parametrizacion
+
+    '('  desplazar e ir al estado 25
+
+    $default  reduce usando la regla 14 (parametrizacion)
+
+    parametrizacion  ir al estado 27
+
+
+Estado 21
+
+   10 declaraciones_subprograma: declaraciones_subprograma declaracion_subprograma .
+
+    $default  reduce usando la regla 10 (declaraciones_subprograma)
+
+
+Estado 22
+
+   22 cuerpo_subprograma: ES . COMIENZO bucle_instruccion FIN IDENTIFICADOR
+   23                   | ES . bucle_declaracion COMIENZO bucle_instruccion FIN IDENTIFICADOR
+
+    COMIENZO       desplazar e ir al estado 28
+    FUNCION        desplazar e ir al estado 11
+    PROCEDIMIENTO  desplazar e ir al estado 12
+    SUBTIPO        desplazar e ir al estado 29
+    TIPO           desplazar e ir al estado 30
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores             ir al estado 31
+    declaracion_subprograma     ir al estado 32
+    especificacion_subprograma  ir al estado 15
+    declaracion                 ir al estado 33
+    bucle_declaracion           ir al estado 34
+    declaracion_objeto          ir al estado 35
+    declaracion_tipo            ir al estado 36
+    declaracion_subtipo         ir al estado 37
+
+
+Estado 23
+
+   11 declaracion_subprograma: especificacion_subprograma cuerpo_subprograma . ';'
+
+    ';'  desplazar e ir al estado 38
+
+
+Estado 24
+
+    8 identificadores: identificadores ',' IDENTIFICADOR .
+
+    $default  reduce usando la regla 8 (identificadores)
+
+
+Estado 25
+
+   15 parametrizacion: '(' . lista_declaracion_parametros ')'
+
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores               ir al estado 39
+    lista_declaracion_parametros  ir al estado 40
+    declaracion_parametros        ir al estado 41
+
+
+Estado 26
+
+   13 especificacion_subprograma: FUNCION IDENTIFICADOR parametrizacion . DEVOLVER especificacion_tipo
+
+    DEVOLVER  desplazar e ir al estado 42
+
+
+Estado 27
+
+   12 especificacion_subprograma: PROCEDIMIENTO IDENTIFICADOR parametrizacion .
+
+    $default  reduce usando la regla 12 (especificacion_subprograma)
+
+
+Estado 28
+
+   22 cuerpo_subprograma: ES COMIENZO . bucle_instruccion FIN IDENTIFICADOR
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 53
+    bucle_instruccion       ir al estado 54
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 29
+
+   47 declaracion_subtipo: SUBTIPO . nombre_tipo ES definicion_subtipo ';'
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar  ir al estado 73
+    nombre_tipo   ir al estado 74
+
+
+Estado 30
+
+   38 declaracion_tipo: TIPO . nombre_tipo ES tipo_compuesto ';'
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar  ir al estado 73
+    nombre_tipo   ir al estado 75
+
+
+Estado 31
+
+    8 identificadores: identificadores . ',' IDENTIFICADOR
+   30 declaracion_objeto: identificadores . ':' CONSTANTE tipo_escalar ASIGNACION expresion ';'
+   31                   | identificadores . ':' tipo_escalar ASIGNACION expresion ';'
+   32                   | identificadores . ':' tipo_compuesto ';'
+   33                   | identificadores . ':' nombre_tipo ';'
+
+    ','  desplazar e ir al estado 17
+    ':'  desplazar e ir al estado 76
+
+
+Estado 32
+
+   27 declaracion: declaracion_subprograma .
+
+    $default  reduce usando la regla 27 (declaracion)
+
+
+Estado 33
+
+   28 bucle_declaracion: declaracion .
+
+    $default  reduce usando la regla 28 (bucle_declaracion)
+
+
+Estado 34
+
+   23 cuerpo_subprograma: ES bucle_declaracion . COMIENZO bucle_instruccion FIN IDENTIFICADOR
+   29 bucle_declaracion: bucle_declaracion . declaracion
+
+    COMIENZO       desplazar e ir al estado 77
+    FUNCION        desplazar e ir al estado 11
+    PROCEDIMIENTO  desplazar e ir al estado 12
+    SUBTIPO        desplazar e ir al estado 29
+    TIPO           desplazar e ir al estado 30
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores             ir al estado 31
+    declaracion_subprograma     ir al estado 32
+    especificacion_subprograma  ir al estado 15
+    declaracion                 ir al estado 78
+    declaracion_objeto          ir al estado 35
+    declaracion_tipo            ir al estado 36
+    declaracion_subtipo         ir al estado 37
+
+
+Estado 35
+
+   24 declaracion: declaracion_objeto .
+
+    $default  reduce usando la regla 24 (declaracion)
+
+
+Estado 36
+
+   25 declaracion: declaracion_tipo .
+
+    $default  reduce usando la regla 25 (declaracion)
+
+
+Estado 37
+
+   26 declaracion: declaracion_subtipo .
+
+    $default  reduce usando la regla 26 (declaracion)
+
+
+Estado 38
+
+   11 declaracion_subprograma: especificacion_subprograma cuerpo_subprograma ';' .
+
+    $default  reduce usando la regla 11 (declaracion_subprograma)
+
+
+Estado 39
+
+    8 identificadores: identificadores . ',' IDENTIFICADOR
+   18 declaracion_parametros: identificadores . ':' modo especificacion_tipo
+
+    ','  desplazar e ir al estado 17
+    ':'  desplazar e ir al estado 79
+
+
+Estado 40
+
+   15 parametrizacion: '(' lista_declaracion_parametros . ')'
+   17 lista_declaracion_parametros: lista_declaracion_parametros . ';' declaracion_parametros
+
+    ';'  desplazar e ir al estado 80
+    ')'  desplazar e ir al estado 81
+
+
+Estado 41
+
+   16 lista_declaracion_parametros: declaracion_parametros .
+
+    $default  reduce usando la regla 16 (lista_declaracion_parametros)
+
+
+Estado 42
+
+   13 especificacion_subprograma: FUNCION IDENTIFICADOR parametrizacion DEVOLVER . especificacion_tipo
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    REGISTRO       desplazar e ir al estado 82
+    TABLA          desplazar e ir al estado 83
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar         ir al estado 73
+    tipo_compuesto       ir al estado 84
+    tipo_tabla           ir al estado 85
+    especificacion_tipo  ir al estado 86
+    tipo_registro        ir al estado 87
+    nombre_tipo          ir al estado 88
+
+
+Estado 43
+
+   78 instruccion_casos: CASOS . expresion ES caso FIN CASOS ';'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 100
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 44
+
+   70 instruccion_devolver: DEVOLVER . expresion ';'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 115
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 45
+
+   69 instruccion_bloque: DECLARACION . bucle_declaracion COMIENZO bucle_instruccion FIN ';'
+
+    FUNCION        desplazar e ir al estado 11
+    PROCEDIMIENTO  desplazar e ir al estado 12
+    SUBTIPO        desplazar e ir al estado 29
+    TIPO           desplazar e ir al estado 30
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores             ir al estado 31
+    declaracion_subprograma     ir al estado 32
+    especificacion_subprograma  ir al estado 15
+    declaracion                 ir al estado 33
+    bucle_declaracion           ir al estado 116
+    declaracion_objeto          ir al estado 35
+    declaracion_tipo            ir al estado 36
+    declaracion_subtipo         ir al estado 37
+
+
+Estado 46
+
+   90 clausula_iteracion: MIENTRAS . expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 117
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 47
+
+   91 clausula_iteracion: PARA . IDENTIFICADOR EN IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 118
+
+
+Estado 48
+
+   92 clausula_iteracion: REPETIR . IDENTIFICADOR EN expresion PUNTOS expresion
+   93                   | REPETIR . IDENTIFICADOR EN DESCENDENTE expresion PUNTOS expresion
+   94                   | REPETIR . IDENTIFICADOR EN expresion PUNTOS expresion PUNTOS expresion
+   95                   | REPETIR . IDENTIFICADOR EN DESCENDENTE expresion PUNTOS expresion PUNTOS expresion
+
+    IDENTIFICADOR  desplazar e ir al estado 119
+
+
+Estado 49
+
+   65 instruccion_salir: SALIR . ';'
+   66                  | SALIR . DE IDENTIFICADOR ';'
+   67                  | SALIR . CUANDO expresion ';'
+   68                  | SALIR . DE IDENTIFICADOR CUANDO expresion ';'
+
+    CUANDO  desplazar e ir al estado 120
+    DE      desplazar e ir al estado 121
+    ';'     desplazar e ir al estado 122
+
+
+Estado 50
+
+   76 instruccion_si: SI . expresion ENTONCES bucle_instruccion FIN SI ';'
+   77               | SI . expresion ENTONCES bucle_instruccion SINO bucle_instruccion FIN SI ';'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 123
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 51
+
+   53 instruccion: VACIA . ';'
+
+    ';'  desplazar e ir al estado 124
+
+
+Estado 52
+
+   72 llamada_subprograma: IDENTIFICADOR . '(' ')'
+   73                    | IDENTIFICADOR . '(' parametros ')'
+   87 instruccion_bucle: IDENTIFICADOR . ':' clausula_iteracion bucle_base ';'
+   89                  | IDENTIFICADOR . ':' clausula_iteracion bucle_base IDENTIFICADOR ';'
+  131 nombre: IDENTIFICADOR .
+
+    '('  desplazar e ir al estado 125
+    ':'  desplazar e ir al estado 126
+
+    $default  reduce usando la regla 131 (nombre)
+
+
+Estado 53
+
+   62 bucle_instruccion: instruccion .
+
+    $default  reduce usando la regla 62 (bucle_instruccion)
+
+
+Estado 54
+
+   22 cuerpo_subprograma: ES COMIENZO bucle_instruccion . FIN IDENTIFICADOR
+   63 bucle_instruccion: bucle_instruccion . instruccion
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    FIN            desplazar e ir al estado 127
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 128
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 55
+
+   54 instruccion: instruccion_asignacion .
+
+    $default  reduce usando la regla 54 (instruccion)
+
+
+Estado 56
+
+   55 instruccion: instruccion_salir .
+
+    $default  reduce usando la regla 55 (instruccion)
+
+
+Estado 57
+
+   56 instruccion: instruccion_bloque .
+
+    $default  reduce usando la regla 56 (instruccion)
+
+
+Estado 58
+
+   57 instruccion: instruccion_devolver .
+
+    $default  reduce usando la regla 57 (instruccion)
+
+
+Estado 59
+
+   58 instruccion: instruccion_llamada .
+
+    $default  reduce usando la regla 58 (instruccion)
+
+
+Estado 60
+
+   71 instruccion_llamada: llamada_subprograma . ';'
+  134 nombre: llamada_subprograma .
+
+    ';'  desplazar e ir al estado 129
+
+    $default  reduce usando la regla 134 (nombre)
+
+
+Estado 61
+
+   59 instruccion: instruccion_si .
+
+    $default  reduce usando la regla 59 (instruccion)
+
+
+Estado 62
+
+   60 instruccion: instruccion_casos .
+
+    $default  reduce usando la regla 60 (instruccion)
+
+
+Estado 63
+
+   61 instruccion: instruccion_bucle .
+
+    $default  reduce usando la regla 61 (instruccion)
+
+
+Estado 64
+
+   86 instruccion_bucle: clausula_iteracion . bucle_base ';'
+   88                  | clausula_iteracion . bucle_base IDENTIFICADOR ';'
+
+    BUCLE  desplazar e ir al estado 130
+
+    bucle_base  ir al estado 131
+
+
+Estado 65
+
+   64 instruccion_asignacion: nombre . ASIGNACION expresion ';'
+  135 campo_registro: nombre . '.' IDENTIFICADOR
+  136 elemento_tabla: nombre . '[' expresion ']'
+
+    ASIGNACION  desplazar e ir al estado 132
+    '.'         desplazar e ir al estado 133
+    '['         desplazar e ir al estado 134
+
+
+Estado 66
+
+  133 nombre: campo_registro .
+
+    $default  reduce usando la regla 133 (nombre)
+
+
+Estado 67
+
+  132 nombre: elemento_tabla .
+
+    $default  reduce usando la regla 132 (nombre)
+
+
+Estado 68
+
+   34 tipo_escalar: BOOLEANO .
+
+    $default  reduce usando la regla 34 (tipo_escalar)
+
+
+Estado 69
+
+   35 tipo_escalar: CARACTER .
+
+    $default  reduce usando la regla 35 (tipo_escalar)
+
+
+Estado 70
+
+   36 tipo_escalar: ENTERO .
+
+    $default  reduce usando la regla 36 (tipo_escalar)
+
+
+Estado 71
+
+   37 tipo_escalar: REAL .
+
+    $default  reduce usando la regla 37 (tipo_escalar)
+
+
+Estado 72
+
+   51 nombre_tipo: IDENTIFICADOR .
+
+    $default  reduce usando la regla 51 (nombre_tipo)
+
+
+Estado 73
+
+   52 nombre_tipo: tipo_escalar .
+
+    $default  reduce usando la regla 52 (nombre_tipo)
+
+
+Estado 74
+
+   47 declaracion_subtipo: SUBTIPO nombre_tipo . ES definicion_subtipo ';'
+
+    ES  desplazar e ir al estado 135
+
+
+Estado 75
+
+   38 declaracion_tipo: TIPO nombre_tipo . ES tipo_compuesto ';'
+
+    ES  desplazar e ir al estado 136
+
+
+Estado 76
+
+   30 declaracion_objeto: identificadores ':' . CONSTANTE tipo_escalar ASIGNACION expresion ';'
+   31                   | identificadores ':' . tipo_escalar ASIGNACION expresion ';'
+   32                   | identificadores ':' . tipo_compuesto ';'
+   33                   | identificadores ':' . nombre_tipo ';'
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    CONSTANTE      desplazar e ir al estado 137
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    REGISTRO       desplazar e ir al estado 82
+    TABLA          desplazar e ir al estado 83
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar    ir al estado 138
+    tipo_compuesto  ir al estado 139
+    tipo_tabla      ir al estado 85
+    tipo_registro   ir al estado 87
+    nombre_tipo     ir al estado 140
+
+
+Estado 77
+
+   23 cuerpo_subprograma: ES bucle_declaracion COMIENZO . bucle_instruccion FIN IDENTIFICADOR
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 53
+    bucle_instruccion       ir al estado 141
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 78
+
+   29 bucle_declaracion: bucle_declaracion declaracion .
+
+    $default  reduce usando la regla 29 (bucle_declaracion)
+
+
+Estado 79
+
+   18 declaracion_parametros: identificadores ':' . modo especificacion_tipo
+
+    REFERENCIA  desplazar e ir al estado 142
+    VALOR       desplazar e ir al estado 143
+
+    modo  ir al estado 144
+
+
+Estado 80
+
+   17 lista_declaracion_parametros: lista_declaracion_parametros ';' . declaracion_parametros
+
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores         ir al estado 39
+    declaracion_parametros  ir al estado 145
+
+
+Estado 81
+
+   15 parametrizacion: '(' lista_declaracion_parametros ')' .
+
+    $default  reduce usando la regla 15 (parametrizacion)
+
+
+Estado 82
+
+   44 tipo_registro: REGISTRO . campo FIN REGISTRO
+
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores  ir al estado 146
+    campo            ir al estado 147
+
+
+Estado 83
+
+   41 tipo_tabla: TABLA . '(' expresion PUNTOS expresion ')' DE especificacion_tipo
+
+    '('  desplazar e ir al estado 148
+
+
+Estado 84
+
+   42 especificacion_tipo: tipo_compuesto .
+
+    $default  reduce usando la regla 42 (especificacion_tipo)
+
+
+Estado 85
+
+   39 tipo_compuesto: tipo_tabla .
+
+    $default  reduce usando la regla 39 (tipo_compuesto)
+
+
+Estado 86
+
+   13 especificacion_subprograma: FUNCION IDENTIFICADOR parametrizacion DEVOLVER especificacion_tipo .
+
+    $default  reduce usando la regla 13 (especificacion_subprograma)
+
+
+Estado 87
+
+   40 tipo_compuesto: tipo_registro .
+
+    $default  reduce usando la regla 40 (tipo_compuesto)
+
+
+Estado 88
+
+   43 especificacion_tipo: nombre_tipo .
+
+    $default  reduce usando la regla 43 (especificacion_tipo)
+
+
+Estado 89
+
+  142 booleano: FALSO .
+
+    $default  reduce usando la regla 142 (booleano)
+
+
+Estado 90
+
+  141 booleano: VERDADERO .
+
+    $default  reduce usando la regla 141 (booleano)
+
+
+Estado 91
+
+  139 literal: CTC_CARACTER .
+
+    $default  reduce usando la regla 139 (literal)
+
+
+Estado 92
+
+  140 literal: CTC_CADENA .
+
+    $default  reduce usando la regla 140 (literal)
+
+
+Estado 93
+
+   72 llamada_subprograma: IDENTIFICADOR . '(' ')'
+   73                    | IDENTIFICADOR . '(' parametros ')'
+  131 nombre: IDENTIFICADOR .
+
+    '('  desplazar e ir al estado 125
+
+    '('       [reduce usando la regla 131 (nombre)]
+    $default  reduce usando la regla 131 (nombre)
+
+
+Estado 94
+
+  143 numero: CTC_ENTERA .
+
+    $default  reduce usando la regla 143 (numero)
+
+
+Estado 95
+
+  144 numero: CTC_REAL .
+
+    $default  reduce usando la regla 144 (numero)
+
+
+Estado 96
+
+  130 primario: '(' . expresion ')'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 149
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 97
+
+  102 negacion: '~' . comparacion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    comparacion          ir al estado 150
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 98
+
+  127 expresion_unaria: '-' . primario
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+
+    llamada_subprograma  ir al estado 99
+    primario             ir al estado 151
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 99
+
+  134 nombre: llamada_subprograma .
+
+    $default  reduce usando la regla 134 (nombre)
+
+
+Estado 100
+
+   78 instruccion_casos: CASOS expresion . ES caso FIN CASOS ';'
+   98 expresion: expresion . OR and_logico
+
+    ES  desplazar e ir al estado 152
+    OR  desplazar e ir al estado 153
+
+
+Estado 101
+
+   97 expresion: and_logico .
+  100 and_logico: and_logico . AND negacion
+
+    AND  desplazar e ir al estado 154
+
+    $default  reduce usando la regla 97 (expresion)
+
+
+Estado 102
+
+   99 and_logico: negacion .
+
+    $default  reduce usando la regla 99 (and_logico)
+
+
+Estado 103
+
+  101 negacion: comparacion .
+
+    $default  reduce usando la regla 101 (negacion)
+
+
+Estado 104
+
+  103 comparacion: desplazamiento .
+  104            | desplazamiento . '>' desplazamiento
+  105            | desplazamiento . '<' desplazamiento
+  106            | desplazamiento . '=' desplazamiento
+  107            | desplazamiento . LEQ desplazamiento
+  108            | desplazamiento . GEQ desplazamiento
+  109            | desplazamiento . NEQ desplazamiento
+  111 desplazamiento: desplazamiento . DESP_DCHA suma_resta
+  112               | desplazamiento . DESP_IZDA suma_resta
+
+    DESP_IZDA  desplazar e ir al estado 155
+    DESP_DCHA  desplazar e ir al estado 156
+    LEQ        desplazar e ir al estado 157
+    GEQ        desplazar e ir al estado 158
+    NEQ        desplazar e ir al estado 159
+    '>'        desplazar e ir al estado 160
+    '<'        desplazar e ir al estado 161
+    '='        desplazar e ir al estado 162
+
+    $default  reduce usando la regla 103 (comparacion)
+
+
+Estado 105
+
+  110 desplazamiento: suma_resta .
+  114 suma_resta: suma_resta . '-' multi_div
+  115           | suma_resta . '+' multi_div
+
+    '-'  desplazar e ir al estado 163
+    '+'  desplazar e ir al estado 164
+
+    '-'       [reduce usando la regla 110 (desplazamiento)]
+    $default  reduce usando la regla 110 (desplazamiento)
+
+
+Estado 106
+
+  113 suma_resta: multi_div .
+  117 multi_div: multi_div . '*' potencia
+  118          | multi_div . '/' potencia
+  119          | multi_div . '\\' potencia
+
+    '*'   desplazar e ir al estado 165
+    '/'   desplazar e ir al estado 166
+    '\\'  desplazar e ir al estado 167
+
+    $default  reduce usando la regla 113 (suma_resta)
+
+
+Estado 107
+
+  116 multi_div: potencia .
+
+    $default  reduce usando la regla 116 (multi_div)
+
+
+Estado 108
+
+  120 potencia: expresion_posfija .
+  121         | expresion_posfija . POTENCIA potencia
+
+    POTENCIA  desplazar e ir al estado 168
+
+    $default  reduce usando la regla 120 (potencia)
+
+
+Estado 109
+
+  122 expresion_posfija: expresion_unaria .
+  123                  | expresion_unaria . operador_posfijo
+
+    INC  desplazar e ir al estado 169
+    DEC  desplazar e ir al estado 170
+
+    $default  reduce usando la regla 122 (expresion_posfija)
+
+    operador_posfijo  ir al estado 171
+
+
+Estado 110
+
+  126 expresion_unaria: primario .
+
+    $default  reduce usando la regla 126 (expresion_unaria)
+
+
+Estado 111
+
+  129 primario: nombre .
+  135 campo_registro: nombre . '.' IDENTIFICADOR
+  136 elemento_tabla: nombre . '[' expresion ']'
+
+    '.'  desplazar e ir al estado 133
+    '['  desplazar e ir al estado 134
+
+    $default  reduce usando la regla 129 (primario)
+
+
+Estado 112
+
+  128 primario: literal .
+
+    $default  reduce usando la regla 128 (primario)
+
+
+Estado 113
+
+  138 literal: booleano .
+
+    $default  reduce usando la regla 138 (literal)
+
+
+Estado 114
+
+  137 literal: numero .
+
+    $default  reduce usando la regla 137 (literal)
+
+
+Estado 115
+
+   70 instruccion_devolver: DEVOLVER expresion . ';'
+   98 expresion: expresion . OR and_logico
+
+    OR   desplazar e ir al estado 153
+    ';'  desplazar e ir al estado 172
+
+
+Estado 116
+
+   29 bucle_declaracion: bucle_declaracion . declaracion
+   69 instruccion_bloque: DECLARACION bucle_declaracion . COMIENZO bucle_instruccion FIN ';'
+
+    COMIENZO       desplazar e ir al estado 173
+    FUNCION        desplazar e ir al estado 11
+    PROCEDIMIENTO  desplazar e ir al estado 12
+    SUBTIPO        desplazar e ir al estado 29
+    TIPO           desplazar e ir al estado 30
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores             ir al estado 31
+    declaracion_subprograma     ir al estado 32
+    especificacion_subprograma  ir al estado 15
+    declaracion                 ir al estado 78
+    declaracion_objeto          ir al estado 35
+    declaracion_tipo            ir al estado 36
+    declaracion_subtipo         ir al estado 37
+
+
+Estado 117
+
+   90 clausula_iteracion: MIENTRAS expresion .
+   98 expresion: expresion . OR and_logico
+
+    OR  desplazar e ir al estado 153
+
+    $default  reduce usando la regla 90 (clausula_iteracion)
+
+
+Estado 118
+
+   91 clausula_iteracion: PARA IDENTIFICADOR . EN IDENTIFICADOR
+
+    EN  desplazar e ir al estado 174
+
+
+Estado 119
+
+   92 clausula_iteracion: REPETIR IDENTIFICADOR . EN expresion PUNTOS expresion
+   93                   | REPETIR IDENTIFICADOR . EN DESCENDENTE expresion PUNTOS expresion
+   94                   | REPETIR IDENTIFICADOR . EN expresion PUNTOS expresion PUNTOS expresion
+   95                   | REPETIR IDENTIFICADOR . EN DESCENDENTE expresion PUNTOS expresion PUNTOS expresion
+
+    EN  desplazar e ir al estado 175
+
+
+Estado 120
+
+   67 instruccion_salir: SALIR CUANDO . expresion ';'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 176
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 121
+
+   66 instruccion_salir: SALIR DE . IDENTIFICADOR ';'
+   68                  | SALIR DE . IDENTIFICADOR CUANDO expresion ';'
+
+    IDENTIFICADOR  desplazar e ir al estado 177
+
+
+Estado 122
+
+   65 instruccion_salir: SALIR ';' .
+
+    $default  reduce usando la regla 65 (instruccion_salir)
+
+
+Estado 123
+
+   76 instruccion_si: SI expresion . ENTONCES bucle_instruccion FIN SI ';'
+   77               | SI expresion . ENTONCES bucle_instruccion SINO bucle_instruccion FIN SI ';'
+   98 expresion: expresion . OR and_logico
+
+    ENTONCES  desplazar e ir al estado 178
+    OR        desplazar e ir al estado 153
+
+
+Estado 124
+
+   53 instruccion: VACIA ';' .
+
+    $default  reduce usando la regla 53 (instruccion)
+
+
+Estado 125
+
+   72 llamada_subprograma: IDENTIFICADOR '(' . ')'
+   73                    | IDENTIFICADOR '(' . parametros ')'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    ')'            desplazar e ir al estado 179
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    parametros           ir al estado 180
+    expresion            ir al estado 181
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 126
+
+   87 instruccion_bucle: IDENTIFICADOR ':' . clausula_iteracion bucle_base ';'
+   89                  | IDENTIFICADOR ':' . clausula_iteracion bucle_base IDENTIFICADOR ';'
+
+    MIENTRAS  desplazar e ir al estado 46
+    PARA      desplazar e ir al estado 47
+    REPETIR   desplazar e ir al estado 48
+
+    clausula_iteracion  ir al estado 182
+
+
+Estado 127
+
+   22 cuerpo_subprograma: ES COMIENZO bucle_instruccion FIN . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 183
+
+
+Estado 128
+
+   63 bucle_instruccion: bucle_instruccion instruccion .
+
+    $default  reduce usando la regla 63 (bucle_instruccion)
+
+
+Estado 129
+
+   71 instruccion_llamada: llamada_subprograma ';' .
+
+    $default  reduce usando la regla 71 (instruccion_llamada)
+
+
+Estado 130
+
+   96 bucle_base: BUCLE . bucle_instruccion FIN BUCLE
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 53
+    bucle_instruccion       ir al estado 184
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 131
+
+   86 instruccion_bucle: clausula_iteracion bucle_base . ';'
+   88                  | clausula_iteracion bucle_base . IDENTIFICADOR ';'
+
+    IDENTIFICADOR  desplazar e ir al estado 185
+    ';'            desplazar e ir al estado 186
+
+
+Estado 132
+
+   64 instruccion_asignacion: nombre ASIGNACION . expresion ';'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 187
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 133
+
+  135 campo_registro: nombre '.' . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 188
+
+
+Estado 134
+
+  136 elemento_tabla: nombre '[' . expresion ']'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 189
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 135
+
+   47 declaracion_subtipo: SUBTIPO nombre_tipo ES . definicion_subtipo ';'
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar        ir al estado 73
+    definicion_subtipo  ir al estado 190
+    nombre_tipo         ir al estado 191
+
+
+Estado 136
+
+   38 declaracion_tipo: TIPO nombre_tipo ES . tipo_compuesto ';'
+
+    REGISTRO  desplazar e ir al estado 82
+    TABLA     desplazar e ir al estado 83
+
+    tipo_compuesto  ir al estado 192
+    tipo_tabla      ir al estado 85
+    tipo_registro   ir al estado 87
+
+
+Estado 137
+
+   30 declaracion_objeto: identificadores ':' CONSTANTE . tipo_escalar ASIGNACION expresion ';'
+
+    BOOLEANO  desplazar e ir al estado 68
+    CARACTER  desplazar e ir al estado 69
+    ENTERO    desplazar e ir al estado 70
+    REAL      desplazar e ir al estado 71
+
+    tipo_escalar  ir al estado 193
+
+
+Estado 138
+
+   31 declaracion_objeto: identificadores ':' tipo_escalar . ASIGNACION expresion ';'
+   52 nombre_tipo: tipo_escalar .
+
+    ASIGNACION  desplazar e ir al estado 194
+
+    $default  reduce usando la regla 52 (nombre_tipo)
+
+
+Estado 139
+
+   32 declaracion_objeto: identificadores ':' tipo_compuesto . ';'
+
+    ';'  desplazar e ir al estado 195
+
+
+Estado 140
+
+   33 declaracion_objeto: identificadores ':' nombre_tipo . ';'
+
+    ';'  desplazar e ir al estado 196
+
+
+Estado 141
+
+   23 cuerpo_subprograma: ES bucle_declaracion COMIENZO bucle_instruccion . FIN IDENTIFICADOR
+   63 bucle_instruccion: bucle_instruccion . instruccion
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    FIN            desplazar e ir al estado 197
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 128
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 142
+
+   20 modo: REFERENCIA .
+
+    $default  reduce usando la regla 20 (modo)
+
+
+Estado 143
+
+   19 modo: VALOR .
+
+    $default  reduce usando la regla 19 (modo)
+
+
+Estado 144
+
+   18 declaracion_parametros: identificadores ':' modo . especificacion_tipo
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    REGISTRO       desplazar e ir al estado 82
+    TABLA          desplazar e ir al estado 83
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar         ir al estado 73
+    tipo_compuesto       ir al estado 84
+    tipo_tabla           ir al estado 85
+    especificacion_tipo  ir al estado 198
+    tipo_registro        ir al estado 87
+    nombre_tipo          ir al estado 88
+
+
+Estado 145
+
+   17 lista_declaracion_parametros: lista_declaracion_parametros ';' declaracion_parametros .
+
+    $default  reduce usando la regla 17 (lista_declaracion_parametros)
+
+
+Estado 146
+
+    8 identificadores: identificadores . ',' IDENTIFICADOR
+   45 campo: identificadores . ':' especificacion_tipo ';'
+
+    ','  desplazar e ir al estado 17
+    ':'  desplazar e ir al estado 199
+
+
+Estado 147
+
+   44 tipo_registro: REGISTRO campo . FIN REGISTRO
+   46 campo: campo . identificadores ':' especificacion_tipo ';'
+
+    FIN            desplazar e ir al estado 200
+    IDENTIFICADOR  desplazar e ir al estado 8
+
+    identificadores  ir al estado 201
+
+
+Estado 148
+
+   41 tipo_tabla: TABLA '(' . expresion PUNTOS expresion ')' DE especificacion_tipo
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 202
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 149
+
+   98 expresion: expresion . OR and_logico
+  130 primario: '(' expresion . ')'
+
+    OR   desplazar e ir al estado 153
+    ')'  desplazar e ir al estado 203
+
+
+Estado 150
+
+  102 negacion: '~' comparacion .
+
+    $default  reduce usando la regla 102 (negacion)
+
+
+Estado 151
+
+  127 expresion_unaria: '-' primario .
+
+    $default  reduce usando la regla 127 (expresion_unaria)
+
+
+Estado 152
+
+   78 instruccion_casos: CASOS expresion ES . caso FIN CASOS ';'
+
+    CUANDO  desplazar e ir al estado 204
+
+    caso  ir al estado 205
+
+
+Estado 153
+
+   98 expresion: expresion OR . and_logico
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    and_logico           ir al estado 206
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 154
+
+  100 and_logico: and_logico AND . negacion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    negacion             ir al estado 207
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 155
+
+  112 desplazamiento: desplazamiento DESP_IZDA . suma_resta
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    suma_resta           ir al estado 208
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 156
+
+  111 desplazamiento: desplazamiento DESP_DCHA . suma_resta
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    suma_resta           ir al estado 209
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 157
+
+  107 comparacion: desplazamiento LEQ . desplazamiento
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    desplazamiento       ir al estado 210
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 158
+
+  108 comparacion: desplazamiento GEQ . desplazamiento
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    desplazamiento       ir al estado 211
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 159
+
+  109 comparacion: desplazamiento NEQ . desplazamiento
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    desplazamiento       ir al estado 212
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 160
+
+  104 comparacion: desplazamiento '>' . desplazamiento
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    desplazamiento       ir al estado 213
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 161
+
+  105 comparacion: desplazamiento '<' . desplazamiento
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    desplazamiento       ir al estado 214
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 162
+
+  106 comparacion: desplazamiento '=' . desplazamiento
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    desplazamiento       ir al estado 215
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 163
+
+  114 suma_resta: suma_resta '-' . multi_div
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    multi_div            ir al estado 216
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 164
+
+  115 suma_resta: suma_resta '+' . multi_div
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    multi_div            ir al estado 217
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 165
+
+  117 multi_div: multi_div '*' . potencia
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    potencia             ir al estado 218
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 166
+
+  118 multi_div: multi_div '/' . potencia
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    potencia             ir al estado 219
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 167
+
+  119 multi_div: multi_div '\\' . potencia
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    potencia             ir al estado 220
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 168
+
+  121 potencia: expresion_posfija POTENCIA . potencia
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    potencia             ir al estado 221
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 169
+
+  124 operador_posfijo: INC .
+
+    $default  reduce usando la regla 124 (operador_posfijo)
+
+
+Estado 170
+
+  125 operador_posfijo: DEC .
+
+    $default  reduce usando la regla 125 (operador_posfijo)
+
+
+Estado 171
+
+  123 expresion_posfija: expresion_unaria operador_posfijo .
+
+    $default  reduce usando la regla 123 (expresion_posfija)
+
+
+Estado 172
+
+   70 instruccion_devolver: DEVOLVER expresion ';' .
+
+    $default  reduce usando la regla 70 (instruccion_devolver)
+
+
+Estado 173
+
+   69 instruccion_bloque: DECLARACION bucle_declaracion COMIENZO . bucle_instruccion FIN ';'
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 53
+    bucle_instruccion       ir al estado 222
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 174
+
+   91 clausula_iteracion: PARA IDENTIFICADOR EN . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 223
+
+
+Estado 175
+
+   92 clausula_iteracion: REPETIR IDENTIFICADOR EN . expresion PUNTOS expresion
+   93                   | REPETIR IDENTIFICADOR EN . DESCENDENTE expresion PUNTOS expresion
+   94                   | REPETIR IDENTIFICADOR EN . expresion PUNTOS expresion PUNTOS expresion
+   95                   | REPETIR IDENTIFICADOR EN . DESCENDENTE expresion PUNTOS expresion PUNTOS expresion
+
+    DESCENDENTE    desplazar e ir al estado 224
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 225
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 176
+
+   67 instruccion_salir: SALIR CUANDO expresion . ';'
+   98 expresion: expresion . OR and_logico
+
+    OR   desplazar e ir al estado 153
+    ';'  desplazar e ir al estado 226
+
+
+Estado 177
+
+   66 instruccion_salir: SALIR DE IDENTIFICADOR . ';'
+   68                  | SALIR DE IDENTIFICADOR . CUANDO expresion ';'
+
+    CUANDO  desplazar e ir al estado 227
+    ';'     desplazar e ir al estado 228
+
+
+Estado 178
+
+   76 instruccion_si: SI expresion ENTONCES . bucle_instruccion FIN SI ';'
+   77               | SI expresion ENTONCES . bucle_instruccion SINO bucle_instruccion FIN SI ';'
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 53
+    bucle_instruccion       ir al estado 229
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 179
+
+   72 llamada_subprograma: IDENTIFICADOR '(' ')' .
+
+    $default  reduce usando la regla 72 (llamada_subprograma)
+
+
+Estado 180
+
+   73 llamada_subprograma: IDENTIFICADOR '(' parametros . ')'
+   75 parametros: parametros . ',' expresion
+
+    ','  desplazar e ir al estado 230
+    ')'  desplazar e ir al estado 231
+
+
+Estado 181
+
+   74 parametros: expresion .
+   98 expresion: expresion . OR and_logico
+
+    OR  desplazar e ir al estado 153
+
+    $default  reduce usando la regla 74 (parametros)
+
+
+Estado 182
+
+   87 instruccion_bucle: IDENTIFICADOR ':' clausula_iteracion . bucle_base ';'
+   89                  | IDENTIFICADOR ':' clausula_iteracion . bucle_base IDENTIFICADOR ';'
+
+    BUCLE  desplazar e ir al estado 130
+
+    bucle_base  ir al estado 232
+
+
+Estado 183
+
+   22 cuerpo_subprograma: ES COMIENZO bucle_instruccion FIN IDENTIFICADOR .
+
+    $default  reduce usando la regla 22 (cuerpo_subprograma)
+
+
+Estado 184
+
+   63 bucle_instruccion: bucle_instruccion . instruccion
+   96 bucle_base: BUCLE bucle_instruccion . FIN BUCLE
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    FIN            desplazar e ir al estado 233
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 128
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 185
+
+   88 instruccion_bucle: clausula_iteracion bucle_base IDENTIFICADOR . ';'
+
+    ';'  desplazar e ir al estado 234
+
+
+Estado 186
+
+   86 instruccion_bucle: clausula_iteracion bucle_base ';' .
+
+    $default  reduce usando la regla 86 (instruccion_bucle)
+
+
+Estado 187
+
+   64 instruccion_asignacion: nombre ASIGNACION expresion . ';'
+   98 expresion: expresion . OR and_logico
+
+    OR   desplazar e ir al estado 153
+    ';'  desplazar e ir al estado 235
+
+
+Estado 188
+
+  135 campo_registro: nombre '.' IDENTIFICADOR .
+
+    $default  reduce usando la regla 135 (campo_registro)
+
+
+Estado 189
+
+   98 expresion: expresion . OR and_logico
+  136 elemento_tabla: nombre '[' expresion . ']'
+
+    OR   desplazar e ir al estado 153
+    ']'  desplazar e ir al estado 236
+
+
+Estado 190
+
+   47 declaracion_subtipo: SUBTIPO nombre_tipo ES definicion_subtipo . ';'
+
+    ';'  desplazar e ir al estado 237
+
+
+Estado 191
+
+   48 definicion_subtipo: nombre_tipo . restriccion
+
+    RANGO  desplazar e ir al estado 238
+
+    restriccion  ir al estado 239
+
+
+Estado 192
+
+   38 declaracion_tipo: TIPO nombre_tipo ES tipo_compuesto . ';'
+
+    ';'  desplazar e ir al estado 240
+
+
+Estado 193
+
+   30 declaracion_objeto: identificadores ':' CONSTANTE tipo_escalar . ASIGNACION expresion ';'
+
+    ASIGNACION  desplazar e ir al estado 241
+
+
+Estado 194
+
+   31 declaracion_objeto: identificadores ':' tipo_escalar ASIGNACION . expresion ';'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 242
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 195
+
+   32 declaracion_objeto: identificadores ':' tipo_compuesto ';' .
+
+    $default  reduce usando la regla 32 (declaracion_objeto)
+
+
+Estado 196
+
+   33 declaracion_objeto: identificadores ':' nombre_tipo ';' .
+
+    $default  reduce usando la regla 33 (declaracion_objeto)
+
+
+Estado 197
+
+   23 cuerpo_subprograma: ES bucle_declaracion COMIENZO bucle_instruccion FIN . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 243
+
+
+Estado 198
+
+   18 declaracion_parametros: identificadores ':' modo especificacion_tipo .
+
+    $default  reduce usando la regla 18 (declaracion_parametros)
+
+
+Estado 199
+
+   45 campo: identificadores ':' . especificacion_tipo ';'
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    REGISTRO       desplazar e ir al estado 82
+    TABLA          desplazar e ir al estado 83
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar         ir al estado 73
+    tipo_compuesto       ir al estado 84
+    tipo_tabla           ir al estado 85
+    especificacion_tipo  ir al estado 244
+    tipo_registro        ir al estado 87
+    nombre_tipo          ir al estado 88
+
+
+Estado 200
+
+   44 tipo_registro: REGISTRO campo FIN . REGISTRO
+
+    REGISTRO  desplazar e ir al estado 245
+
+
+Estado 201
+
+    8 identificadores: identificadores . ',' IDENTIFICADOR
+   46 campo: campo identificadores . ':' especificacion_tipo ';'
+
+    ','  desplazar e ir al estado 17
+    ':'  desplazar e ir al estado 246
+
+
+Estado 202
+
+   41 tipo_tabla: TABLA '(' expresion . PUNTOS expresion ')' DE especificacion_tipo
+   98 expresion: expresion . OR and_logico
+
+    PUNTOS  desplazar e ir al estado 247
+    OR      desplazar e ir al estado 153
+
+
+Estado 203
+
+  130 primario: '(' expresion ')' .
+
+    $default  reduce usando la regla 130 (primario)
+
+
+Estado 204
+
+   79 caso: CUANDO . entradas FLECHA bucle_instruccion
+
+    FALSO          desplazar e ir al estado 89
+    OTRO           desplazar e ir al estado 248
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    entradas             ir al estado 249
+    entrada              ir al estado 250
+    expresion            ir al estado 251
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 205
+
+   78 instruccion_casos: CASOS expresion ES caso . FIN CASOS ';'
+   80 caso: caso . CUANDO entradas FLECHA bucle_instruccion
+
+    CUANDO  desplazar e ir al estado 252
+    FIN     desplazar e ir al estado 253
+
+
+Estado 206
+
+   98 expresion: expresion OR and_logico .
+  100 and_logico: and_logico . AND negacion
+
+    AND  desplazar e ir al estado 154
+
+    $default  reduce usando la regla 98 (expresion)
+
+
+Estado 207
+
+  100 and_logico: and_logico AND negacion .
+
+    $default  reduce usando la regla 100 (and_logico)
+
+
+Estado 208
+
+  112 desplazamiento: desplazamiento DESP_IZDA suma_resta .
+  114 suma_resta: suma_resta . '-' multi_div
+  115           | suma_resta . '+' multi_div
+
+    '-'  desplazar e ir al estado 163
+    '+'  desplazar e ir al estado 164
+
+    '-'       [reduce usando la regla 112 (desplazamiento)]
+    $default  reduce usando la regla 112 (desplazamiento)
+
+
+Estado 209
+
+  111 desplazamiento: desplazamiento DESP_DCHA suma_resta .
+  114 suma_resta: suma_resta . '-' multi_div
+  115           | suma_resta . '+' multi_div
+
+    '-'  desplazar e ir al estado 163
+    '+'  desplazar e ir al estado 164
+
+    '-'       [reduce usando la regla 111 (desplazamiento)]
+    $default  reduce usando la regla 111 (desplazamiento)
+
+
+Estado 210
+
+  107 comparacion: desplazamiento LEQ desplazamiento .
+  111 desplazamiento: desplazamiento . DESP_DCHA suma_resta
+  112               | desplazamiento . DESP_IZDA suma_resta
+
+    DESP_IZDA  desplazar e ir al estado 155
+    DESP_DCHA  desplazar e ir al estado 156
+
+    $default  reduce usando la regla 107 (comparacion)
+
+
+Estado 211
+
+  108 comparacion: desplazamiento GEQ desplazamiento .
+  111 desplazamiento: desplazamiento . DESP_DCHA suma_resta
+  112               | desplazamiento . DESP_IZDA suma_resta
+
+    DESP_IZDA  desplazar e ir al estado 155
+    DESP_DCHA  desplazar e ir al estado 156
+
+    $default  reduce usando la regla 108 (comparacion)
+
+
+Estado 212
+
+  109 comparacion: desplazamiento NEQ desplazamiento .
+  111 desplazamiento: desplazamiento . DESP_DCHA suma_resta
+  112               | desplazamiento . DESP_IZDA suma_resta
+
+    DESP_IZDA  desplazar e ir al estado 155
+    DESP_DCHA  desplazar e ir al estado 156
+
+    $default  reduce usando la regla 109 (comparacion)
+
+
+Estado 213
+
+  104 comparacion: desplazamiento '>' desplazamiento .
+  111 desplazamiento: desplazamiento . DESP_DCHA suma_resta
+  112               | desplazamiento . DESP_IZDA suma_resta
+
+    DESP_IZDA  desplazar e ir al estado 155
+    DESP_DCHA  desplazar e ir al estado 156
+
+    $default  reduce usando la regla 104 (comparacion)
+
+
+Estado 214
+
+  105 comparacion: desplazamiento '<' desplazamiento .
+  111 desplazamiento: desplazamiento . DESP_DCHA suma_resta
+  112               | desplazamiento . DESP_IZDA suma_resta
+
+    DESP_IZDA  desplazar e ir al estado 155
+    DESP_DCHA  desplazar e ir al estado 156
+
+    $default  reduce usando la regla 105 (comparacion)
+
+
+Estado 215
+
+  106 comparacion: desplazamiento '=' desplazamiento .
+  111 desplazamiento: desplazamiento . DESP_DCHA suma_resta
+  112               | desplazamiento . DESP_IZDA suma_resta
+
+    DESP_IZDA  desplazar e ir al estado 155
+    DESP_DCHA  desplazar e ir al estado 156
+
+    $default  reduce usando la regla 106 (comparacion)
+
+
+Estado 216
+
+  114 suma_resta: suma_resta '-' multi_div .
+  117 multi_div: multi_div . '*' potencia
+  118          | multi_div . '/' potencia
+  119          | multi_div . '\\' potencia
+
+    '*'   desplazar e ir al estado 165
+    '/'   desplazar e ir al estado 166
+    '\\'  desplazar e ir al estado 167
+
+    $default  reduce usando la regla 114 (suma_resta)
+
+
+Estado 217
+
+  115 suma_resta: suma_resta '+' multi_div .
+  117 multi_div: multi_div . '*' potencia
+  118          | multi_div . '/' potencia
+  119          | multi_div . '\\' potencia
+
+    '*'   desplazar e ir al estado 165
+    '/'   desplazar e ir al estado 166
+    '\\'  desplazar e ir al estado 167
+
+    $default  reduce usando la regla 115 (suma_resta)
+
+
+Estado 218
+
+  117 multi_div: multi_div '*' potencia .
+
+    $default  reduce usando la regla 117 (multi_div)
+
+
+Estado 219
+
+  118 multi_div: multi_div '/' potencia .
+
+    $default  reduce usando la regla 118 (multi_div)
+
+
+Estado 220
+
+  119 multi_div: multi_div '\\' potencia .
+
+    $default  reduce usando la regla 119 (multi_div)
+
+
+Estado 221
+
+  121 potencia: expresion_posfija POTENCIA potencia .
+
+    $default  reduce usando la regla 121 (potencia)
+
+
+Estado 222
+
+   63 bucle_instruccion: bucle_instruccion . instruccion
+   69 instruccion_bloque: DECLARACION bucle_declaracion COMIENZO bucle_instruccion . FIN ';'
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    FIN            desplazar e ir al estado 254
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 128
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 223
+
+   91 clausula_iteracion: PARA IDENTIFICADOR EN IDENTIFICADOR .
+
+    $default  reduce usando la regla 91 (clausula_iteracion)
+
+
+Estado 224
+
+   93 clausula_iteracion: REPETIR IDENTIFICADOR EN DESCENDENTE . expresion PUNTOS expresion
+   95                   | REPETIR IDENTIFICADOR EN DESCENDENTE . expresion PUNTOS expresion PUNTOS expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 255
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 225
+
+   92 clausula_iteracion: REPETIR IDENTIFICADOR EN expresion . PUNTOS expresion
+   94                   | REPETIR IDENTIFICADOR EN expresion . PUNTOS expresion PUNTOS expresion
+   98 expresion: expresion . OR and_logico
+
+    PUNTOS  desplazar e ir al estado 256
+    OR      desplazar e ir al estado 153
+
+
+Estado 226
+
+   67 instruccion_salir: SALIR CUANDO expresion ';' .
+
+    $default  reduce usando la regla 67 (instruccion_salir)
+
+
+Estado 227
+
+   68 instruccion_salir: SALIR DE IDENTIFICADOR CUANDO . expresion ';'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 257
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 228
+
+   66 instruccion_salir: SALIR DE IDENTIFICADOR ';' .
+
+    $default  reduce usando la regla 66 (instruccion_salir)
+
+
+Estado 229
+
+   63 bucle_instruccion: bucle_instruccion . instruccion
+   76 instruccion_si: SI expresion ENTONCES bucle_instruccion . FIN SI ';'
+   77               | SI expresion ENTONCES bucle_instruccion . SINO bucle_instruccion FIN SI ';'
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    FIN            desplazar e ir al estado 258
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    SINO           desplazar e ir al estado 259
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 128
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 230
+
+   75 parametros: parametros ',' . expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 260
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 231
+
+   73 llamada_subprograma: IDENTIFICADOR '(' parametros ')' .
+
+    $default  reduce usando la regla 73 (llamada_subprograma)
+
+
+Estado 232
+
+   87 instruccion_bucle: IDENTIFICADOR ':' clausula_iteracion bucle_base . ';'
+   89                  | IDENTIFICADOR ':' clausula_iteracion bucle_base . IDENTIFICADOR ';'
+
+    IDENTIFICADOR  desplazar e ir al estado 261
+    ';'            desplazar e ir al estado 262
+
+
+Estado 233
+
+   96 bucle_base: BUCLE bucle_instruccion FIN . BUCLE
+
+    BUCLE  desplazar e ir al estado 263
+
+
+Estado 234
+
+   88 instruccion_bucle: clausula_iteracion bucle_base IDENTIFICADOR ';' .
+
+    $default  reduce usando la regla 88 (instruccion_bucle)
+
+
+Estado 235
+
+   64 instruccion_asignacion: nombre ASIGNACION expresion ';' .
+
+    $default  reduce usando la regla 64 (instruccion_asignacion)
+
+
+Estado 236
+
+  136 elemento_tabla: nombre '[' expresion ']' .
+
+    $default  reduce usando la regla 136 (elemento_tabla)
+
+
+Estado 237
+
+   47 declaracion_subtipo: SUBTIPO nombre_tipo ES definicion_subtipo ';' .
+
+    $default  reduce usando la regla 47 (declaracion_subtipo)
+
+
+Estado 238
+
+   49 restriccion: RANGO . expresion PUNTOS expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 264
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 239
+
+   48 definicion_subtipo: nombre_tipo restriccion .
+   50 restriccion: restriccion . expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    $default  reduce usando la regla 48 (definicion_subtipo)
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 265
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 240
+
+   38 declaracion_tipo: TIPO nombre_tipo ES tipo_compuesto ';' .
+
+    $default  reduce usando la regla 38 (declaracion_tipo)
+
+
+Estado 241
+
+   30 declaracion_objeto: identificadores ':' CONSTANTE tipo_escalar ASIGNACION . expresion ';'
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 266
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 242
+
+   31 declaracion_objeto: identificadores ':' tipo_escalar ASIGNACION expresion . ';'
+   98 expresion: expresion . OR and_logico
+
+    OR   desplazar e ir al estado 153
+    ';'  desplazar e ir al estado 267
+
+
+Estado 243
+
+   23 cuerpo_subprograma: ES bucle_declaracion COMIENZO bucle_instruccion FIN IDENTIFICADOR .
+
+    $default  reduce usando la regla 23 (cuerpo_subprograma)
+
+
+Estado 244
+
+   45 campo: identificadores ':' especificacion_tipo . ';'
+
+    ';'  desplazar e ir al estado 268
+
+
+Estado 245
+
+   44 tipo_registro: REGISTRO campo FIN REGISTRO .
+
+    $default  reduce usando la regla 44 (tipo_registro)
+
+
+Estado 246
+
+   46 campo: campo identificadores ':' . especificacion_tipo ';'
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    REGISTRO       desplazar e ir al estado 82
+    TABLA          desplazar e ir al estado 83
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar         ir al estado 73
+    tipo_compuesto       ir al estado 84
+    tipo_tabla           ir al estado 85
+    especificacion_tipo  ir al estado 269
+    tipo_registro        ir al estado 87
+    nombre_tipo          ir al estado 88
+
+
+Estado 247
+
+   41 tipo_tabla: TABLA '(' expresion PUNTOS . expresion ')' DE especificacion_tipo
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 270
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 248
+
+   85 entrada: OTRO .
+
+    $default  reduce usando la regla 85 (entrada)
+
+
+Estado 249
+
+   79 caso: CUANDO entradas . FLECHA bucle_instruccion
+   82 entradas: entradas . '|' entrada
+
+    FLECHA  desplazar e ir al estado 271
+    '|'     desplazar e ir al estado 272
+
+
+Estado 250
+
+   81 entradas: entrada .
+
+    $default  reduce usando la regla 81 (entradas)
+
+
+Estado 251
+
+   83 entrada: expresion .
+   84        | expresion . PUNTOS expresion
+   98 expresion: expresion . OR and_logico
+
+    PUNTOS  desplazar e ir al estado 273
+    OR      desplazar e ir al estado 153
+
+    $default  reduce usando la regla 83 (entrada)
+
+
+Estado 252
+
+   80 caso: caso CUANDO . entradas FLECHA bucle_instruccion
+
+    FALSO          desplazar e ir al estado 89
+    OTRO           desplazar e ir al estado 248
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    entradas             ir al estado 274
+    entrada              ir al estado 250
+    expresion            ir al estado 251
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 253
+
+   78 instruccion_casos: CASOS expresion ES caso FIN . CASOS ';'
+
+    CASOS  desplazar e ir al estado 275
+
+
+Estado 254
+
+   69 instruccion_bloque: DECLARACION bucle_declaracion COMIENZO bucle_instruccion FIN . ';'
+
+    ';'  desplazar e ir al estado 276
+
+
+Estado 255
+
+   93 clausula_iteracion: REPETIR IDENTIFICADOR EN DESCENDENTE expresion . PUNTOS expresion
+   95                   | REPETIR IDENTIFICADOR EN DESCENDENTE expresion . PUNTOS expresion PUNTOS expresion
+   98 expresion: expresion . OR and_logico
+
+    PUNTOS  desplazar e ir al estado 277
+    OR      desplazar e ir al estado 153
+
+
+Estado 256
+
+   92 clausula_iteracion: REPETIR IDENTIFICADOR EN expresion PUNTOS . expresion
+   94                   | REPETIR IDENTIFICADOR EN expresion PUNTOS . expresion PUNTOS expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 278
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 257
+
+   68 instruccion_salir: SALIR DE IDENTIFICADOR CUANDO expresion . ';'
+   98 expresion: expresion . OR and_logico
+
+    OR   desplazar e ir al estado 153
+    ';'  desplazar e ir al estado 279
+
+
+Estado 258
+
+   76 instruccion_si: SI expresion ENTONCES bucle_instruccion FIN . SI ';'
+
+    SI  desplazar e ir al estado 280
+
+
+Estado 259
+
+   77 instruccion_si: SI expresion ENTONCES bucle_instruccion SINO . bucle_instruccion FIN SI ';'
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 53
+    bucle_instruccion       ir al estado 281
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 260
+
+   75 parametros: parametros ',' expresion .
+   98 expresion: expresion . OR and_logico
+
+    OR  desplazar e ir al estado 153
+
+    $default  reduce usando la regla 75 (parametros)
+
+
+Estado 261
+
+   89 instruccion_bucle: IDENTIFICADOR ':' clausula_iteracion bucle_base IDENTIFICADOR . ';'
+
+    ';'  desplazar e ir al estado 282
+
+
+Estado 262
+
+   87 instruccion_bucle: IDENTIFICADOR ':' clausula_iteracion bucle_base ';' .
+
+    $default  reduce usando la regla 87 (instruccion_bucle)
+
+
+Estado 263
+
+   96 bucle_base: BUCLE bucle_instruccion FIN BUCLE .
+
+    $default  reduce usando la regla 96 (bucle_base)
+
+
+Estado 264
+
+   49 restriccion: RANGO expresion . PUNTOS expresion
+   98 expresion: expresion . OR and_logico
+
+    PUNTOS  desplazar e ir al estado 283
+    OR      desplazar e ir al estado 153
+
+
+Estado 265
+
+   50 restriccion: restriccion expresion .
+   98 expresion: expresion . OR and_logico
+
+    OR  desplazar e ir al estado 153
+
+    $default  reduce usando la regla 50 (restriccion)
+
+
+Estado 266
+
+   30 declaracion_objeto: identificadores ':' CONSTANTE tipo_escalar ASIGNACION expresion . ';'
+   98 expresion: expresion . OR and_logico
+
+    OR   desplazar e ir al estado 153
+    ';'  desplazar e ir al estado 284
+
+
+Estado 267
+
+   31 declaracion_objeto: identificadores ':' tipo_escalar ASIGNACION expresion ';' .
+
+    $default  reduce usando la regla 31 (declaracion_objeto)
+
+
+Estado 268
+
+   45 campo: identificadores ':' especificacion_tipo ';' .
+
+    $default  reduce usando la regla 45 (campo)
+
+
+Estado 269
+
+   46 campo: campo identificadores ':' especificacion_tipo . ';'
+
+    ';'  desplazar e ir al estado 285
+
+
+Estado 270
+
+   41 tipo_tabla: TABLA '(' expresion PUNTOS expresion . ')' DE especificacion_tipo
+   98 expresion: expresion . OR and_logico
+
+    OR   desplazar e ir al estado 153
+    ')'  desplazar e ir al estado 286
+
+
+Estado 271
+
+   79 caso: CUANDO entradas FLECHA . bucle_instruccion
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 53
+    bucle_instruccion       ir al estado 287
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 272
+
+   82 entradas: entradas '|' . entrada
+
+    FALSO          desplazar e ir al estado 89
+    OTRO           desplazar e ir al estado 248
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    entrada              ir al estado 288
+    expresion            ir al estado 251
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 273
+
+   84 entrada: expresion PUNTOS . expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 289
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 274
+
+   80 caso: caso CUANDO entradas . FLECHA bucle_instruccion
+   82 entradas: entradas . '|' entrada
+
+    FLECHA  desplazar e ir al estado 290
+    '|'     desplazar e ir al estado 272
+
+
+Estado 275
+
+   78 instruccion_casos: CASOS expresion ES caso FIN CASOS . ';'
+
+    ';'  desplazar e ir al estado 291
+
+
+Estado 276
+
+   69 instruccion_bloque: DECLARACION bucle_declaracion COMIENZO bucle_instruccion FIN ';' .
+
+    $default  reduce usando la regla 69 (instruccion_bloque)
+
+
+Estado 277
+
+   93 clausula_iteracion: REPETIR IDENTIFICADOR EN DESCENDENTE expresion PUNTOS . expresion
+   95                   | REPETIR IDENTIFICADOR EN DESCENDENTE expresion PUNTOS . expresion PUNTOS expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 292
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 278
+
+   92 clausula_iteracion: REPETIR IDENTIFICADOR EN expresion PUNTOS expresion .
+   94                   | REPETIR IDENTIFICADOR EN expresion PUNTOS expresion . PUNTOS expresion
+   98 expresion: expresion . OR and_logico
+
+    PUNTOS  desplazar e ir al estado 293
+    OR      desplazar e ir al estado 153
+
+    $default  reduce usando la regla 92 (clausula_iteracion)
+
+
+Estado 279
+
+   68 instruccion_salir: SALIR DE IDENTIFICADOR CUANDO expresion ';' .
+
+    $default  reduce usando la regla 68 (instruccion_salir)
+
+
+Estado 280
+
+   76 instruccion_si: SI expresion ENTONCES bucle_instruccion FIN SI . ';'
+
+    ';'  desplazar e ir al estado 294
+
+
+Estado 281
+
+   63 bucle_instruccion: bucle_instruccion . instruccion
+   77 instruccion_si: SI expresion ENTONCES bucle_instruccion SINO bucle_instruccion . FIN SI ';'
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    FIN            desplazar e ir al estado 295
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 128
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 282
+
+   89 instruccion_bucle: IDENTIFICADOR ':' clausula_iteracion bucle_base IDENTIFICADOR ';' .
+
+    $default  reduce usando la regla 89 (instruccion_bucle)
+
+
+Estado 283
+
+   49 restriccion: RANGO expresion PUNTOS . expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 296
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 284
+
+   30 declaracion_objeto: identificadores ':' CONSTANTE tipo_escalar ASIGNACION expresion ';' .
+
+    $default  reduce usando la regla 30 (declaracion_objeto)
+
+
+Estado 285
+
+   46 campo: campo identificadores ':' especificacion_tipo ';' .
+
+    $default  reduce usando la regla 46 (campo)
+
+
+Estado 286
+
+   41 tipo_tabla: TABLA '(' expresion PUNTOS expresion ')' . DE especificacion_tipo
+
+    DE  desplazar e ir al estado 297
+
+
+Estado 287
+
+   63 bucle_instruccion: bucle_instruccion . instruccion
+   79 caso: CUANDO entradas FLECHA bucle_instruccion .
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    $default  reduce usando la regla 79 (caso)
+
+    instruccion             ir al estado 128
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 288
+
+   82 entradas: entradas '|' entrada .
+
+    $default  reduce usando la regla 82 (entradas)
+
+
+Estado 289
+
+   84 entrada: expresion PUNTOS expresion .
+   98 expresion: expresion . OR and_logico
+
+    OR  desplazar e ir al estado 153
+
+    $default  reduce usando la regla 84 (entrada)
+
+
+Estado 290
+
+   80 caso: caso CUANDO entradas FLECHA . bucle_instruccion
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    instruccion             ir al estado 53
+    bucle_instruccion       ir al estado 298
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 291
+
+   78 instruccion_casos: CASOS expresion ES caso FIN CASOS ';' .
+
+    $default  reduce usando la regla 78 (instruccion_casos)
+
+
+Estado 292
+
+   93 clausula_iteracion: REPETIR IDENTIFICADOR EN DESCENDENTE expresion PUNTOS expresion .
+   95                   | REPETIR IDENTIFICADOR EN DESCENDENTE expresion PUNTOS expresion . PUNTOS expresion
+   98 expresion: expresion . OR and_logico
+
+    PUNTOS  desplazar e ir al estado 299
+    OR      desplazar e ir al estado 153
+
+    $default  reduce usando la regla 93 (clausula_iteracion)
+
+
+Estado 293
+
+   94 clausula_iteracion: REPETIR IDENTIFICADOR EN expresion PUNTOS expresion PUNTOS . expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 300
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 294
+
+   76 instruccion_si: SI expresion ENTONCES bucle_instruccion FIN SI ';' .
+
+    $default  reduce usando la regla 76 (instruccion_si)
+
+
+Estado 295
+
+   77 instruccion_si: SI expresion ENTONCES bucle_instruccion SINO bucle_instruccion FIN . SI ';'
+
+    SI  desplazar e ir al estado 301
+
+
+Estado 296
+
+   49 restriccion: RANGO expresion PUNTOS expresion .
+   98 expresion: expresion . OR and_logico
+
+    OR  desplazar e ir al estado 153
+
+    $default  reduce usando la regla 49 (restriccion)
+
+
+Estado 297
+
+   41 tipo_tabla: TABLA '(' expresion PUNTOS expresion ')' DE . especificacion_tipo
+
+    BOOLEANO       desplazar e ir al estado 68
+    CARACTER       desplazar e ir al estado 69
+    ENTERO         desplazar e ir al estado 70
+    REAL           desplazar e ir al estado 71
+    REGISTRO       desplazar e ir al estado 82
+    TABLA          desplazar e ir al estado 83
+    IDENTIFICADOR  desplazar e ir al estado 72
+
+    tipo_escalar         ir al estado 73
+    tipo_compuesto       ir al estado 84
+    tipo_tabla           ir al estado 85
+    especificacion_tipo  ir al estado 302
+    tipo_registro        ir al estado 87
+    nombre_tipo          ir al estado 88
+
+
+Estado 298
+
+   63 bucle_instruccion: bucle_instruccion . instruccion
+   80 caso: caso CUANDO entradas FLECHA bucle_instruccion .
+
+    CASOS          desplazar e ir al estado 43
+    DEVOLVER       desplazar e ir al estado 44
+    DECLARACION    desplazar e ir al estado 45
+    MIENTRAS       desplazar e ir al estado 46
+    PARA           desplazar e ir al estado 47
+    REPETIR        desplazar e ir al estado 48
+    SALIR          desplazar e ir al estado 49
+    SI             desplazar e ir al estado 50
+    VACIA          desplazar e ir al estado 51
+    IDENTIFICADOR  desplazar e ir al estado 52
+
+    $default  reduce usando la regla 80 (caso)
+
+    instruccion             ir al estado 128
+    instruccion_asignacion  ir al estado 55
+    instruccion_salir       ir al estado 56
+    instruccion_bloque      ir al estado 57
+    instruccion_devolver    ir al estado 58
+    instruccion_llamada     ir al estado 59
+    llamada_subprograma     ir al estado 60
+    instruccion_si          ir al estado 61
+    instruccion_casos       ir al estado 62
+    instruccion_bucle       ir al estado 63
+    clausula_iteracion      ir al estado 64
+    nombre                  ir al estado 65
+    campo_registro          ir al estado 66
+    elemento_tabla          ir al estado 67
+
+
+Estado 299
+
+   95 clausula_iteracion: REPETIR IDENTIFICADOR EN DESCENDENTE expresion PUNTOS expresion PUNTOS . expresion
+
+    FALSO          desplazar e ir al estado 89
+    VERDADERO      desplazar e ir al estado 90
+    CTC_CARACTER   desplazar e ir al estado 91
+    CTC_CADENA     desplazar e ir al estado 92
+    IDENTIFICADOR  desplazar e ir al estado 93
+    CTC_ENTERA     desplazar e ir al estado 94
+    CTC_REAL       desplazar e ir al estado 95
+    '('            desplazar e ir al estado 96
+    '~'            desplazar e ir al estado 97
+    '-'            desplazar e ir al estado 98
+
+    llamada_subprograma  ir al estado 99
+    expresion            ir al estado 303
+    and_logico           ir al estado 101
+    negacion             ir al estado 102
+    comparacion          ir al estado 103
+    desplazamiento       ir al estado 104
+    suma_resta           ir al estado 105
+    multi_div            ir al estado 106
+    potencia             ir al estado 107
+    expresion_posfija    ir al estado 108
+    expresion_unaria     ir al estado 109
+    primario             ir al estado 110
+    nombre               ir al estado 111
+    campo_registro       ir al estado 66
+    elemento_tabla       ir al estado 67
+    literal              ir al estado 112
+    booleano             ir al estado 113
+    numero               ir al estado 114
+
+
+Estado 300
+
+   94 clausula_iteracion: REPETIR IDENTIFICADOR EN expresion PUNTOS expresion PUNTOS expresion .
+   98 expresion: expresion . OR and_logico
+
+    OR  desplazar e ir al estado 153
+
+    $default  reduce usando la regla 94 (clausula_iteracion)
+
+
+Estado 301
+
+   77 instruccion_si: SI expresion ENTONCES bucle_instruccion SINO bucle_instruccion FIN SI . ';'
+
+    ';'  desplazar e ir al estado 304
+
+
+Estado 302
+
+   41 tipo_tabla: TABLA '(' expresion PUNTOS expresion ')' DE especificacion_tipo .
+
+    $default  reduce usando la regla 41 (tipo_tabla)
+
+
+Estado 303
+
+   95 clausula_iteracion: REPETIR IDENTIFICADOR EN DESCENDENTE expresion PUNTOS expresion PUNTOS expresion .
+   98 expresion: expresion . OR and_logico
+
+    OR  desplazar e ir al estado 153
+
+    $default  reduce usando la regla 95 (clausula_iteracion)
+
+
+Estado 304
+
+   77 instruccion_si: SI expresion ENTONCES bucle_instruccion SINO bucle_instruccion FIN SI ';' .
+
+    $default  reduce usando la regla 77 (instruccion_si)
