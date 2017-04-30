@@ -17,7 +17,7 @@ MANTISA (({ENTEROS}|{FRACCIONARIOS})(^[+-]?[0-9]+))
 REALES ({FRACCIONARIOS}|{MANTISA})
 IDENTIFICADORES ([A-Za-z_][[:alnum:]_]*)
 DELIMITADORES ("("|")"|"|"|":"|";"|",")
-OPERADORES ("+"|"-"|"*"|"/"|"\\"|"."|"["|"]"|">"|"<"|"="|"~")
+OPERADORES ("+"|"-"|"*"|"/"|"."|"["|"]"|">"|"<"|"="|"~")
 
 %%
 
@@ -93,6 +93,7 @@ OPERADORES ("+"|"-"|"*"|"/"|"\\"|"."|"["|"]"|">"|"<"|"="|"~")
 ".."							{ printf("linea %d, operador: %s\n", linea, yytext); return(PUNTOS); }
 "=>"							{ printf("linea %d, operador: %s\n", linea, yytext); return(FLECHA); }
 {OPERADORES}			{ printf("linea %d, operador: %s\n", linea, yytext); return(yytext[0]); }
+"\\"					{ printf("linea %d, operador: %s\n", linea, yytext); return(RESTO); }
 
  /* Delimitadores */
 ":="						{ printf("linea %d, delimitador: %s\n", linea, yytext); return(ASIGNACION); }

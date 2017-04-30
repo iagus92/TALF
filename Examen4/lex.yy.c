@@ -352,8 +352,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 81
-#define YY_END_OF_BUFFER 82
+#define YY_NUM_RULES 82
+#define YY_END_OF_BUFFER 83
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -363,30 +363,30 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[317] =
     {   0,
-        0,    0,   73,   73,    5,    5,   11,   11,   82,   80,
-       78,   79,    4,   80,   80,   71,   59,   59,   59,   59,
-       59,   55,   71,   59,   59,   59,   54,   54,   54,   54,
+        0,    0,   74,   74,    5,    5,   11,   11,   83,   81,
+       79,   80,    4,   81,   81,   72,   59,   59,   59,   59,
+       59,   55,   72,   59,   59,   59,   54,   54,   54,   54,
        54,   54,   54,   54,   54,   54,   54,   54,   54,   59,
-       59,   72,   73,   74,   81,   75,    5,    8,    9,    7,
-       11,   10,   12,   77,   76,   77,   77,    0,    0,    0,
-        3,    0,    0,    0,   68,   70,   69,   62,   57,   56,
-       66,    0,   55,    0,   60,   61,    0,   64,   65,   58,
-       63,   54,   54,   54,   54,   54,   54,   23,   25,   28,
+       60,   73,   74,   75,   82,   76,    5,    8,    9,    7,
+       11,   10,   12,   78,   77,   78,   78,    0,    0,    0,
+        3,    0,    0,    0,   69,   71,   70,   63,   57,   56,
+       67,    0,   55,    0,   61,   62,    0,   65,   66,   58,
+       64,   54,   54,   54,   54,   54,   54,   23,   25,   28,
        54,   54,   54,   54,   54,   54,   54,   54,   54,   54,
 
-       54,   54,   45,   54,   54,   54,   54,   54,   67,   73,
-        6,    5,   11,   76,   76,   77,   55,   77,   55,    1,
+       54,   54,   45,   54,   54,   54,   54,   54,   68,   74,
+        6,    5,   11,   77,   77,   78,   55,   78,   55,    1,
         3,    0,    3,    0,    0,    1,    0,    0,    0,    0,
         0,   56,    0,    0,    0,    0,   54,   54,   54,   54,
        54,   54,   54,   54,   54,   54,   54,   54,   54,   32,
        54,   54,   54,   54,   54,   54,   54,   54,   54,   54,
        54,   54,   54,   54,   54,   54,   54,   54,   54,    0,
-       56,   77,   56,    2,    2,    0,    0,    0,    0,    0,
+       56,   78,   56,    2,    2,    0,    0,    0,    0,    0,
        14,   54,   54,   54,   54,   54,   54,   54,   54,   54,
        54,   54,   54,   54,   54,   54,   54,   54,   36,   37,
 
        54,   54,   40,   54,   54,   54,   54,   46,   54,   54,
-       49,   54,   54,   54,   77,   56,    0,    0,    0,   13,
+       49,   54,   54,   54,   78,   56,    0,    0,    0,   13,
        15,   54,   17,   54,   19,   54,   54,   54,   54,   54,
        54,   54,   54,   54,   52,   54,   54,   54,   54,   39,
        54,   54,   54,   44,   54,   48,   50,   51,   54,   54,
@@ -1387,122 +1387,127 @@ YY_RULE_SETUP
 #line 96 "simplon.l"
 { printf("linea %d, operador: %s\n", linea, yytext); return(yytext[0]); }
 	YY_BREAK
-/* Delimitadores */
 case 60:
 YY_RULE_SETUP
-#line 99 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(ASIGNACION); }
+#line 97 "simplon.l"
+{ printf("linea %d, operador: %s\n", linea, yytext); return(RESTO); }
 	YY_BREAK
+/* Delimitadores */
 case 61:
 YY_RULE_SETUP
 #line 100 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(DESP_IZDA); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(ASIGNACION); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
 #line 101 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(DESP_DCHA); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(DESP_IZDA); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
 #line 102 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(GEQ); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(DESP_DCHA); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
 #line 103 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(LEQ); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(GEQ); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
 #line 104 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(NEQ); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(LEQ); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
 #line 105 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(AND); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(NEQ); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
 #line 106 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(OR); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(AND); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
 #line 107 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(POTENCIA); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(OR); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
 #line 108 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(DEC); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(POTENCIA); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
 #line 109 "simplon.l"
-{ printf("linea %d, delimitador: %s\n", linea, yytext); return(INC); }
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(DEC); }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
 #line 110 "simplon.l"
+{ printf("linea %d, delimitador: %s\n", linea, yytext); return(INC); }
+	YY_BREAK
+case 72:
+YY_RULE_SETUP
+#line 111 "simplon.l"
 { printf("linea %d, delimitador: %s\n", linea, yytext); return(yytext[0]); }
 	YY_BREAK
 /* Comentarios */
-case 72:
-YY_RULE_SETUP
-#line 113 "simplon.l"
-BEGIN (COM);
-	YY_BREAK
 case 73:
 YY_RULE_SETUP
 #line 114 "simplon.l"
-;
+BEGIN (COM);
 	YY_BREAK
 case 74:
-/* rule 74 can match eol */
 YY_RULE_SETUP
 #line 115 "simplon.l"
-linea++;
+;
 	YY_BREAK
 case 75:
+/* rule 75 can match eol */
 YY_RULE_SETUP
 #line 116 "simplon.l"
-BEGIN 0;
+linea++;
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 117 "simplon.l"
+BEGIN 0;
+	YY_BREAK
+case 77:
+YY_RULE_SETUP
+#line 118 "simplon.l"
 ;
 	YY_BREAK
 /* Espacios, saltos de linea y errores */
-case 77:
-YY_RULE_SETUP
-#line 120 "simplon.l"
-printf ("linea %d, ERROR: %s\n",linea,yytext);
-	YY_BREAK
 case 78:
 YY_RULE_SETUP
 #line 121 "simplon.l"
-;
+printf ("linea %d, ERROR: %s\n",linea,yytext);
 	YY_BREAK
 case 79:
-/* rule 79 can match eol */
 YY_RULE_SETUP
 #line 122 "simplon.l"
-linea++;
+;
 	YY_BREAK
 case 80:
+/* rule 80 can match eol */
 YY_RULE_SETUP
 #line 123 "simplon.l"
-printf ("linea %d, ERROR: %s\n",linea,yytext);
+linea++;
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 125 "simplon.l"
+#line 124 "simplon.l"
+printf ("linea %d, ERROR: %s\n",linea,yytext);
+	YY_BREAK
+case 82:
+YY_RULE_SETUP
+#line 126 "simplon.l"
 ECHO;
 	YY_BREAK
-#line 1505 "lex.yy.c"
+#line 1510 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COM):
 case YY_STATE_EOF(CAD):
@@ -2508,6 +2513,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 125 "simplon.l"
+#line 126 "simplon.l"
 
 

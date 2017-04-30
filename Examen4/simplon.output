@@ -1,8 +1,3 @@
-Terminales no usados en la gramática
-
-   RESTO
-
-
 Estado 93 conflictos: 1 desplazamiento/reducción
 Estado 105 conflictos: 1 desplazamiento/reducción
 Estado 208 conflictos: 1 desplazamiento/reducción
@@ -181,7 +176,7 @@ Gramática
   116 multi_div: potencia
   117          | multi_div '*' potencia
   118          | multi_div '/' potencia
-  119          | multi_div '\\' potencia
+  119          | multi_div RESTO potencia
 
   120 potencia: expresion_posfija
   121         | expresion_posfija POTENCIA potencia
@@ -238,7 +233,6 @@ $end (0) 0
 '=' (61) 106
 '>' (62) 104
 '[' (91) 136
-'\\' (92) 119
 ']' (93) 136
 '|' (124) 82
 '~' (126) 102
@@ -289,7 +283,7 @@ CTC_ENTERA (299) 143
 CTC_REAL (300) 144
 NOMBRE_MODULO (301) 4
 PUNTOS (302) 41 49 84 92 93 94 95
-RESTO (303)
+RESTO (303) 119
 ASIGNACION (304) 30 31 64
 FLECHA (305) 79 80
 POTENCIA (306) 121
@@ -306,137 +300,137 @@ OR (315) 98
 
 No terminales con las reglas donde aparecen
 
-$accept (79)
+$accept (78)
     en la izquierda: 0
-programa (80)
+programa (79)
     en la izquierda: 1, en la derecha: 0
-modulos (81)
+modulos (80)
     en la izquierda: 2 3, en la derecha: 1 3
-modulo (82)
+modulo (81)
     en la izquierda: 4, en la derecha: 3
-exportaciones (83)
+exportaciones (82)
     en la izquierda: 5 6, en la derecha: 1
-identificadores (84)
+identificadores (83)
     en la izquierda: 7 8, en la derecha: 6 8 18 30 31 32 33 45 46
-declaraciones_subprograma (85)
+declaraciones_subprograma (84)
     en la izquierda: 9 10, en la derecha: 1 10
-declaracion_subprograma (86)
+declaracion_subprograma (85)
     en la izquierda: 11, en la derecha: 9 10 27
-especificacion_subprograma (87)
+especificacion_subprograma (86)
     en la izquierda: 12 13, en la derecha: 11
-parametrizacion (88)
+parametrizacion (87)
     en la izquierda: 14 15, en la derecha: 12 13
-lista_declaracion_parametros (89)
+lista_declaracion_parametros (88)
     en la izquierda: 16 17, en la derecha: 15 17
-declaracion_parametros (90)
+declaracion_parametros (89)
     en la izquierda: 18, en la derecha: 16 17
-modo (91)
+modo (90)
     en la izquierda: 19 20, en la derecha: 18
-cuerpo_subprograma (92)
+cuerpo_subprograma (91)
     en la izquierda: 21 22 23, en la derecha: 11
-declaracion (93)
+declaracion (92)
     en la izquierda: 24 25 26 27, en la derecha: 28 29
-bucle_declaracion (94)
+bucle_declaracion (93)
     en la izquierda: 28 29, en la derecha: 23 29 69
-declaracion_objeto (95)
+declaracion_objeto (94)
     en la izquierda: 30 31 32 33, en la derecha: 24
-tipo_escalar (96)
+tipo_escalar (95)
     en la izquierda: 34 35 36 37, en la derecha: 30 31 52
-declaracion_tipo (97)
+declaracion_tipo (96)
     en la izquierda: 38, en la derecha: 25
-tipo_compuesto (98)
+tipo_compuesto (97)
     en la izquierda: 39 40, en la derecha: 32 38 42
-tipo_tabla (99)
+tipo_tabla (98)
     en la izquierda: 41, en la derecha: 39
-especificacion_tipo (100)
+especificacion_tipo (99)
     en la izquierda: 42 43, en la derecha: 13 18 41 45 46
-tipo_registro (101)
+tipo_registro (100)
     en la izquierda: 44, en la derecha: 40
-campo (102)
+campo (101)
     en la izquierda: 45 46, en la derecha: 44 46
-declaracion_subtipo (103)
+declaracion_subtipo (102)
     en la izquierda: 47, en la derecha: 26
-definicion_subtipo (104)
+definicion_subtipo (103)
     en la izquierda: 48, en la derecha: 47
-restriccion (105)
+restriccion (104)
     en la izquierda: 49 50, en la derecha: 48 50
-nombre_tipo (106)
+nombre_tipo (105)
     en la izquierda: 51 52, en la derecha: 33 38 43 47 48
-instruccion (107)
+instruccion (106)
     en la izquierda: 53 54 55 56 57 58 59 60 61, en la derecha: 62
     63
-bucle_instruccion (108)
+bucle_instruccion (107)
     en la izquierda: 62 63, en la derecha: 22 23 63 69 76 77 79 80
     96
-instruccion_asignacion (109)
+instruccion_asignacion (108)
     en la izquierda: 64, en la derecha: 54
-instruccion_salir (110)
+instruccion_salir (109)
     en la izquierda: 65 66 67 68, en la derecha: 55
-instruccion_bloque (111)
+instruccion_bloque (110)
     en la izquierda: 69, en la derecha: 56
-instruccion_devolver (112)
+instruccion_devolver (111)
     en la izquierda: 70, en la derecha: 57
-instruccion_llamada (113)
+instruccion_llamada (112)
     en la izquierda: 71, en la derecha: 58
-llamada_subprograma (114)
+llamada_subprograma (113)
     en la izquierda: 72 73, en la derecha: 71 134
-parametros (115)
+parametros (114)
     en la izquierda: 74 75, en la derecha: 73 75
-instruccion_si (116)
+instruccion_si (115)
     en la izquierda: 76 77, en la derecha: 59
-instruccion_casos (117)
+instruccion_casos (116)
     en la izquierda: 78, en la derecha: 60
-caso (118)
+caso (117)
     en la izquierda: 79 80, en la derecha: 78 80
-entradas (119)
+entradas (118)
     en la izquierda: 81 82, en la derecha: 79 80 82
-entrada (120)
+entrada (119)
     en la izquierda: 83 84 85, en la derecha: 81 82
-instruccion_bucle (121)
+instruccion_bucle (120)
     en la izquierda: 86 87 88 89, en la derecha: 61
-clausula_iteracion (122)
+clausula_iteracion (121)
     en la izquierda: 90 91 92 93 94 95, en la derecha: 86 87 88 89
-bucle_base (123)
+bucle_base (122)
     en la izquierda: 96, en la derecha: 86 87 88 89
-expresion (124)
+expresion (123)
     en la izquierda: 97 98, en la derecha: 30 31 41 49 50 64 67 68
     70 74 75 76 77 78 83 84 90 92 93 94 95 98 130 136
-and_logico (125)
+and_logico (124)
     en la izquierda: 99 100, en la derecha: 97 98 100
-negacion (126)
+negacion (125)
     en la izquierda: 101 102, en la derecha: 99 100
-comparacion (127)
+comparacion (126)
     en la izquierda: 103 104 105 106 107 108 109, en la derecha: 101
     102
-desplazamiento (128)
+desplazamiento (127)
     en la izquierda: 110 111 112, en la derecha: 103 104 105 106 107
     108 109 111 112
-suma_resta (129)
+suma_resta (128)
     en la izquierda: 113 114 115, en la derecha: 110 111 112 114 115
-multi_div (130)
+multi_div (129)
     en la izquierda: 116 117 118 119, en la derecha: 113 114 115 117
     118 119
-potencia (131)
+potencia (130)
     en la izquierda: 120 121, en la derecha: 116 117 118 119 121
-expresion_posfija (132)
+expresion_posfija (131)
     en la izquierda: 122 123, en la derecha: 120 121
-operador_posfijo (133)
+operador_posfijo (132)
     en la izquierda: 124 125, en la derecha: 123
-expresion_unaria (134)
+expresion_unaria (133)
     en la izquierda: 126 127, en la derecha: 122 123
-primario (135)
+primario (134)
     en la izquierda: 128 129 130, en la derecha: 126 127
-nombre (136)
+nombre (135)
     en la izquierda: 131 132 133 134, en la derecha: 64 129 135 136
-campo_registro (137)
+campo_registro (136)
     en la izquierda: 135, en la derecha: 133
-elemento_tabla (138)
+elemento_tabla (137)
     en la izquierda: 136, en la derecha: 132
-literal (139)
+literal (138)
     en la izquierda: 137 138 139 140, en la derecha: 128
-booleano (140)
+booleano (139)
     en la izquierda: 141 142, en la derecha: 138
-numero (141)
+numero (140)
     en la izquierda: 143 144, en la derecha: 137
 
 
@@ -1647,11 +1641,11 @@ Estado 106
   113 suma_resta: multi_div .
   117 multi_div: multi_div . '*' potencia
   118          | multi_div . '/' potencia
-  119          | multi_div . '\\' potencia
+  119          | multi_div . RESTO potencia
 
-    '*'   desplazar e ir al estado 165
-    '/'   desplazar e ir al estado 166
-    '\\'  desplazar e ir al estado 167
+    RESTO  desplazar e ir al estado 165
+    '*'    desplazar e ir al estado 166
+    '/'    desplazar e ir al estado 167
 
     $default  reduce usando la regla 113 (suma_resta)
 
@@ -2626,7 +2620,7 @@ Estado 164
 
 Estado 165
 
-  117 multi_div: multi_div '*' . potencia
+  119 multi_div: multi_div RESTO . potencia
 
     FALSO          desplazar e ir al estado 89
     VERDADERO      desplazar e ir al estado 90
@@ -2653,7 +2647,7 @@ Estado 165
 
 Estado 166
 
-  118 multi_div: multi_div '/' . potencia
+  117 multi_div: multi_div '*' . potencia
 
     FALSO          desplazar e ir al estado 89
     VERDADERO      desplazar e ir al estado 90
@@ -2680,7 +2674,7 @@ Estado 166
 
 Estado 167
 
-  119 multi_div: multi_div '\\' . potencia
+  118 multi_div: multi_div '/' . potencia
 
     FALSO          desplazar e ir al estado 89
     VERDADERO      desplazar e ir al estado 90
@@ -3316,11 +3310,11 @@ Estado 216
   114 suma_resta: suma_resta '-' multi_div .
   117 multi_div: multi_div . '*' potencia
   118          | multi_div . '/' potencia
-  119          | multi_div . '\\' potencia
+  119          | multi_div . RESTO potencia
 
-    '*'   desplazar e ir al estado 165
-    '/'   desplazar e ir al estado 166
-    '\\'  desplazar e ir al estado 167
+    RESTO  desplazar e ir al estado 165
+    '*'    desplazar e ir al estado 166
+    '/'    desplazar e ir al estado 167
 
     $default  reduce usando la regla 114 (suma_resta)
 
@@ -3330,34 +3324,34 @@ Estado 217
   115 suma_resta: suma_resta '+' multi_div .
   117 multi_div: multi_div . '*' potencia
   118          | multi_div . '/' potencia
-  119          | multi_div . '\\' potencia
+  119          | multi_div . RESTO potencia
 
-    '*'   desplazar e ir al estado 165
-    '/'   desplazar e ir al estado 166
-    '\\'  desplazar e ir al estado 167
+    RESTO  desplazar e ir al estado 165
+    '*'    desplazar e ir al estado 166
+    '/'    desplazar e ir al estado 167
 
     $default  reduce usando la regla 115 (suma_resta)
 
 
 Estado 218
 
+  119 multi_div: multi_div RESTO potencia .
+
+    $default  reduce usando la regla 119 (multi_div)
+
+
+Estado 219
+
   117 multi_div: multi_div '*' potencia .
 
     $default  reduce usando la regla 117 (multi_div)
 
 
-Estado 219
+Estado 220
 
   118 multi_div: multi_div '/' potencia .
 
     $default  reduce usando la regla 118 (multi_div)
-
-
-Estado 220
-
-  119 multi_div: multi_div '\\' potencia .
-
-    $default  reduce usando la regla 119 (multi_div)
 
 
 Estado 221

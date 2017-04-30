@@ -314,7 +314,7 @@ multi_div
 		: potencia
 		| multi_div '*' potencia { printf ("  multi_div ->  multi_div '*' potencia\n"); }
 		| multi_div '/' potencia { printf ("  multi_div ->  multi_div '/' potencia\n"); } 
-		| multi_div '\\' potencia { printf ("  multi_div ->  multi_div '\\' potencia\n"); } 
+		| multi_div RESTO potencia { printf ("  multi_div ->  multi_div '\\' potencia\n"); } 
 		;
 
 potencia
